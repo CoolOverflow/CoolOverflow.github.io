@@ -1,37 +1,23 @@
-## Welcome to GitHub Pages
+﻿## 欢迎来到我的GitHub博客
 
-You can use the [editor on GitHub](https://github.com/kimomi/Kimomi.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+我主要使用GitHub博客来分享我学习游戏开发的心得和体会。每一篇博客我都会用心写的，希望大家都能进步哦ヾ(๑╹◡╹)ﾉ"
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### 博客内容(按时间)
 
-### Markdown
+- [2019年11月](./blog/201911/201911.md)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### 博客内容(按内容)
 
-```markdown
-Syntax highlighted code block
+- [3D数学中角位移的表示：矩阵、欧拉角和四元数](./blog/201911/AngularDisplacementInMath.md)
 
-# Header 1
-## Header 2
-### Header 3
+### GitHub项目
 
-- Bulleted
-- List
+- [C#控制台程序](https://github.com/kimomi/Csharp-Console-Game)
 
-1. Numbered
-2. List
+- [Unity游戏项目](https://github.com/kimomi/Csharp-Unity-Game)
 
-**Bold** and _Italic_ and `Code` text
+### 联系方式
 
-[Link](url) and ![Image](src)
-```
+QQ: 859072939
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kimomi/Kimomi.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+E-mail: dolamixie@163.com
