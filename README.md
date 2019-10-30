@@ -8,7 +8,7 @@
 
 ### 博客内容(按内容)
 
-- [3D数学中角位移的表示：矩阵、欧拉角和四元数](./blog/201911/AngularDisplacementInMath.md)
+- [3D数学中角位移的表示：矩阵、欧拉角和四元数](./blog/201911/AngularDisplacementInMath.html)
 
 ### GitHub项目
 

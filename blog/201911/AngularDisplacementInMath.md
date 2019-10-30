@@ -70,3 +70,6 @@ $$squad(q_i,q_{i+1},s_i,s_{i+1},h)=slerp(slerp(q_i,q_{i+1},h),slerp(s_i,s_{i+1},
 - 插值平滑，插值就（一定要）选它
 - 和矩阵之间的转换较快
 - 难
+
+
+[返回主页](https://kimomi.github.io/)
