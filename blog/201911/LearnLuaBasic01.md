@@ -11,7 +11,7 @@
 
 当然也可以在控制台内运行命令 lua 直接在控制台内操作，如下操作。
 
-```powershell
+```
 Windows PowerShell
 版权所有 (C) Microsoft Corporation。保留所有权利。
 
