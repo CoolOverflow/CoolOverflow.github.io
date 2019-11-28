@@ -10,6 +10,7 @@
 
 - [3D数学中角位移的表示：矩阵、欧拉角和四元数](./blog/201911/AngularDisplacementInMath.html)
 - [Lua语言学习1：基本语法和数据类型](./blog/201911/LearnLuaBasic01.md)
+- [Python中的绘图：turtle](./blog/201911/Turtle.md)
 
 ### GitHub项目
 
