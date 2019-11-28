@@ -53,7 +53,7 @@ draw_path(path1)
 exitonclick()
 ```
 ### 3.绘制饼干
-![](biscute.)
+
 ```python
 import turtle as t
 
