@@ -11,6 +11,7 @@
 - [3D数学中角位移的表示：矩阵、欧拉角和四元数](./blog/201911/AngularDisplacementInMath.html)
 - [Lua语言学习1：基本语法和数据类型](./blog/201911/LearnLuaBasic01.md)
 - [Python中的绘图：turtle](./blog/201911/Turtle.md)
+- [计算机图形学：Bresenham画线算法](./blog/201911/Bresenham画线算法.md)
 
 ### GitHub项目
 
