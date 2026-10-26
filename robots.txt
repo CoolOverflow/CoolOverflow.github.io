@@ -1,3 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /content/
+Disallow: /design/
+Disallow: /data/
+Disallow: /tools/
+Disallow: /games/_tests/
+Disallow: /games/_tools/
 Sitemap: https://cooloverflow.github.io/sitemap.xml

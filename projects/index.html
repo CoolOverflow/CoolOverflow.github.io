@@ -6,7 +6,7 @@
 <title>项目与仓库 · Amuda</title>
 <meta name="description" content="CoolOverflow 的 15 个公开 GitHub 仓库：图形学、游戏引擎、工具与实验。">
 <link rel="canonical" href="https://cooloverflow.github.io/projects/">
-<meta name="author" content="谢宗德">
+<meta name="author" content="Amuda">
 <meta name="theme-color" content="#070a0f">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Amuda">
@@ -95,7 +95,7 @@
   <p class="project-story">照着 nesdev wiki 和 StepFC 的思路，用 C# 从 6502 指令、寻址模式一行行写起，再补 PPU 的扫描线与精灵渲染，最后用 OpenTK 开窗口出画面。仓库里带着 nestest 与 colortest 两个 ROM，方便逐指令对拍，调通那一刻确实是模拟器最有成就感的瞬间。</p>
   <ul class="tag-list project-tags"><li class="tag">模拟器</li><li class="tag">C#</li><li class="tag">CPU/PPU</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2024</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/FamicomSimulator" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -113,7 +113,7 @@
   <p class="project-story">从画线、画三角形开始逐课复刻 tinyrenderer：重心坐标插值、Z-Buffer、Gouraud 着色，再到法线贴图、阴影贴图和屏幕空间后处理。每课一个独立 shader 文件配 CMake 工程，可以单独跑起来对比效果，是理解“管线每步在算什么”最直接的方式。</p>
   <ul class="tag-list project-tags"><li class="tag">软件渲染</li><li class="tag">C++</li><li class="tag">光栅化</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2024</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/TinyRendererLearn" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -131,7 +131,7 @@
   <p class="project-story">看到“Excel 也能当 GPU”的脑洞后动手验证：把每个单元格当一个像素，用 VBA 宏在单元格上跑光线步进，算完直接刷单元格背景色。画面确实能出来，代价是算一张图要等很久——但也算用最笨的方式体会了一次并行度对渲染性能的意义。</p>
   <ul class="tag-list project-tags"><li class="tag">光线步进</li><li class="tag">Excel</li><li class="tag">VB.NET</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>2</span></span><span class="meta-sep" aria-hidden="true">·</span><span class="project-year">2023</span></span>
+    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>2</span></span></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/ExcelAsPixelShader" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       <a class="project-link" href="https://blog.csdn.net/qq_38680728/article/details/129433460" target="_blank" rel="noopener noreferrer">演示 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -149,7 +149,7 @@
   <p class="project-story">照 Unity 官方性能指南做的实验：不再给每种特效各存一个粒子系统，而是用通用对象池 + 一个配置数据类，需要时把参数刷到对象上。实测粒子系统内存从 65.7M 降到 16.7M 配置 + 10.7M 场景，也顺带记下了“停用不释放、只有销毁才回收内存”这个容易踩的坑。</p>
   <ul class="tag-list project-tags"><li class="tag">Unity</li><li class="tag">性能优化</li><li class="tag">内存</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>12</span></span><span class="meta-sep" aria-hidden="true">·</span><span class="project-year">2023</span></span>
+    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>12</span></span></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/UnityParticleSystemMemoryOptimization" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -167,7 +167,7 @@
   <p class="project-story">把流体模拟的几条常见路线各写了一遍：元胞自动机用格子演化，最短平快；SPH 给粒子加核函数算密度、压强和粘性；第三版干脆把粒子场当 SDF 交给渲染。三个脚本都带结果 GIF，适合横向看不同方法在效果和开销上怎么取舍。</p>
   <ul class="tag-list project-tags"><li class="tag">流体模拟</li><li class="tag">Python</li><li class="tag">SPH</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2022</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/SimpleFluidSimulation" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -185,7 +185,7 @@
   <p class="project-story">先跑 main.py 训练一个小网络逼近参考图，再用 model_to_c.py 把权重导出成 C 代码，直接粘进 Shadertoy 片段着色器。图像不再是贴图，而是一组长到离谱的常量。训练和渲染因此拆成两条能分别验证的链路，也算亲手摸了一次“权重即数据”的边界。</p>
   <ul class="tag-list project-tags"><li class="tag">Shader</li><li class="tag">神经网络</li><li class="tag">GLSL</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>3</span></span><span class="meta-sep" aria-hidden="true">·</span><span class="project-year">2022</span></span>
+    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>3</span></span></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/ShadertoyNNImage" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -200,10 +200,10 @@
   </div>
   <h2 class="project-title"><a href="https://github.com/CoolOverflow/claude-code" target="_blank" rel="noopener noreferrer">claude-code</a></h2>
   <p class="project-desc">Claude Code 公开源码快照的镜像，供供应链与安全研究</p>
-  <p class="project-story">ultraworkers/claw-code 的镜像：2026 年 3 月随 npm 包的 source map 暴露出来的 Claude Code 源码快照。仓库只做归档与阅读，README 写明了研究目的和版权归属，不提供可运行产物。</p>
+  <p class="project-story">ultraworkers/claw-code 的镜像：随 npm 包的 source map 暴露出来的 Claude Code 源码快照。仓库只做归档与阅读，README 写明了研究目的和版权归属，不提供可运行产物。</p>
   <ul class="tag-list project-tags"><li class="tag">AI 编程</li><li class="tag">源码研究</li><li class="tag">fork</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2026</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/claude-code" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       <a class="project-link" href="https://x.com/Fried_rice/status/2038894956459290963" target="_blank" rel="noopener noreferrer">演示 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -218,10 +218,10 @@
   </div>
   <h2 class="project-title"><a href="https://github.com/CoolOverflow/CoolOverflow.github.io" target="_blank" rel="noopener noreferrer">CoolOverflow.github.io</a></h2>
   <p class="project-desc">个人技术博客，记录游戏开发与图形学的学习笔记与踩坑</p>
-  <p class="project-story">2019 年开的 GitHub Pages 博客，用 Jekyll 的 minimal 主题按月归档学习笔记，记录游戏开发与图形学里走过的路。这次改版会把它从“文章列表”变成能展示项目和经历的个人主页。</p>
+  <p class="project-story">最早的 GitHub Pages 博客，用 Jekyll 的 minimal 主题按月归档学习笔记，记录游戏开发与图形学里走过的路。这次改版会把它从“文章列表”变成能展示项目和经历的个人主页。</p>
   <ul class="tag-list project-tags"><li class="tag">博客</li><li class="tag">Jekyll</li><li class="tag">学习笔记</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2019</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/CoolOverflow.github.io" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       <a class="project-link" href="https://cooloverflow.github.io/" target="_blank" rel="noopener noreferrer">演示 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -239,7 +239,7 @@
   <p class="project-story">fork 自 sacshadow 的 URP 中国水墨渲染工程，在本地跑通并补了自己的效果截图；水墨的分层墨色与轮廓描边都在 Unity 里实现，可作为风格化渲染或水墨题材的参考实现。</p>
   <ul class="tag-list project-tags"><li class="tag">Shader</li><li class="tag">URP</li><li class="tag">水墨风格</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2025</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/3D_ChineseInkPaintingStyleShader_URP" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -257,7 +257,7 @@
   <p class="project-story">读论文后顺手落地的复现仓库：C# 写 Perlin 噪声并导出 GIF 观察分形特征，用 Python 实现 Marching Cubes 的查表与等值面三角化，还留了一份 RRDCT 图像处理的未完成尝试（目前只有骨架和前后对比图）。</p>
   <ul class="tag-list project-tags"><li class="tag">算法复现</li><li class="tag">MarchingCubes</li><li class="tag">Perlin噪声</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2021</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/FromPaper" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -272,10 +272,10 @@
   </div>
   <h2 class="project-title"><a href="https://github.com/CoolOverflow/ChatGPTBotInFlutter" target="_blank" rel="noopener noreferrer">ChatGPTBotInFlutter</a></h2>
   <p class="project-desc">Flutter 写的 ChatGPT 聊天客户端，填入 API Key 即可对话</p>
-  <p class="project-story">2023 年 ChatGPT 刚火时搭的 Flutter 聊天客户端：一个输入框、一个消息列表，直接请求 OpenAI 接口，API Key 留在本地配置里。代码量不大，但跑通了移动端接大模型的最小闭环。</p>
+  <p class="project-story">ChatGPT 刚火时搭的 Flutter 聊天客户端：一个输入框、一个消息列表，直接请求 OpenAI 接口，API Key 留在本地配置里。代码量不大，但跑通了移动端接大模型的最小闭环。</p>
   <ul class="tag-list project-tags"><li class="tag">Flutter</li><li class="tag">Dart</li><li class="tag">ChatGPT</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2023</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/ChatGPTBotInFlutter" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -293,7 +293,7 @@
   <p class="project-story">System.Random 只能顺序取数，没法直接问“第 1024 个随机数是多少”。这个实现换成按索引取值，任意下标都能直接算出同一个结果；README 里还附了用反射存取 System.Random 内部状态的办法，方便老项目不改调用点就能存档和恢复随机序列。</p>
   <ul class="tag-list project-tags"><li class="tag">随机数</li><li class="tag">C#</li><li class="tag">噪声</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2023</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/CSharpPersudoRandom" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       
@@ -311,7 +311,7 @@
   <p class="project-story">ThisisGame 的《游戏引擎浅入浅出》配套仓库，从 OpenGL 环境搭建一路讲到骨骼动画、多线程渲染和阴影，最后落成一个完整小引擎。fork 过来主要是跟着章节跑代码，方便对照书里的实现读源码。</p>
   <ul class="tag-list project-tags"><li class="tag">游戏引擎</li><li class="tag">教程</li><li class="tag">fork</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2022</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/cpp-game-engine-book" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       <a class="project-link" href="http://www.thisisgame.com.cn/tutorial?book=cpp-game-engine-book&lang=zh&md=Introduction.md" target="_blank" rel="noopener noreferrer">演示 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -329,7 +329,7 @@
   <p class="project-story">用 LitJson 做配置时发现它反序列化基类列表会丢掉子类类型，于是加上了带类型标记的多态支持：序列化时写入类型名，读回时按标记实例化具体子类。配套的 CSDN 文章把改法和踩过的坑都记录了下来。</p>
   <ul class="tag-list project-tags"><li class="tag">JSON</li><li class="tag">多态</li><li class="tag">C#</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>3</span></span><span class="meta-sep" aria-hidden="true">·</span><span class="project-year">2022</span></span>
+    <span class="project-meta"><span class="project-stars"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 3Z"/></svg><span>3</span></span></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/LitJsonPolymorphism" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       <a class="project-link" href="https://blog.csdn.net/qq_38680728/article/details/119672976" target="_blank" rel="noopener noreferrer">演示 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -347,7 +347,7 @@
   <p class="project-story">腾讯 xLua 的 fork，Unity/C# 侧的 Lua 热更新方案：支持 Android、iOS 等平台，可以只给单个函数打补丁。留在账号里作为热更新方案的参考实现，需要时对照改本地工程。</p>
   <ul class="tag-list project-tags"><li class="tag">Lua</li><li class="tag">热更新</li><li class="tag">Unity</li></ul>
   <div class="project-foot">
-    <span class="project-meta"><span class="project-year">2020</span></span>
+    <span class="project-meta"></span>
     <span class="project-links">
       <a class="project-link" href="https://github.com/CoolOverflow/xLua" target="_blank" rel="noopener noreferrer">源码 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
       <a class="project-link" href="https://github.com/Tencent/xLua" target="_blank" rel="noopener noreferrer">演示 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
@@ -361,7 +361,7 @@
 </main>
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p class="footer-copy">© 2019–2026 Amuda / 谢宗德 · 用 <span class="heart" aria-hidden="true">♥</span> 和原生 JS 手写 · 静态托管于 GitHub Pages</p>
+    <p class="footer-copy">© Amuda · 用 <span class="heart" aria-hidden="true">♥</span> 和原生 JS 手写 · 静态托管于 GitHub Pages</p>
     <nav class="footer-links" aria-label="页脚导航">
       <a href="/blog/">文章</a>
       <a href="/projects/">项目</a>

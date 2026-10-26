@@ -100,11 +100,8 @@ function loadPosts() {
 const posts = loadPosts();
 const years = [...new Set(posts.map((p) => p.date.slice(0, 4)))].sort().reverse();
 const categories = [...new Set(posts.map((p) => p.category))];
-const lastPostDate = posts[0]?.date || `${new Date().getFullYear()}-01-01`;
 const playableGames = games.filter((g) => g.status !== 'soon');
 const totalStars = repos.reduce((s, r) => s + (r.stars || 0), 0);
-const sinceYear = site.startYear || 2019;
-const nowYear = new Date().getFullYear();
 
 /* --------------------------------------------------------------------------
    icons
@@ -180,7 +177,7 @@ function header(active) {
 function footer() {
   return `<footer class="site-footer">
   <div class="container footer-inner">
-    <p class="footer-copy">© ${sinceYear}–${nowYear} ${esc(site.name)} / ${esc(site.realName)} · 用 <span class="heart" aria-hidden="true">♥</span> 和原生 JS 手写 · 静态托管于 GitHub Pages</p>
+    <p class="footer-copy">© ${esc(site.name)} · 用 <span class="heart" aria-hidden="true">♥</span> 和原生 JS 手写 · 静态托管于 GitHub Pages</p>
     <nav class="footer-links" aria-label="页脚导航">
       <a href="/blog/">文章</a>
       <a href="/projects/">项目</a>
@@ -204,7 +201,7 @@ function layout({ title, description, canonical, active = '', bodyClass = '', co
 <title>${fullTitle}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${canonical}">
-<meta name="author" content="${esc(site.realName)}">
+<meta name="author" content="${esc(site.name)}">
 <meta name="theme-color" content="#070a0f">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${esc(site.name)}">
@@ -258,9 +255,7 @@ function projectCard(r, { compact = false, headingLevel = 3 } = {}) {
   }
   ${tags.length ? `<ul class="tag-list project-tags">${tags.map((t) => `<li class="tag">${esc(t)}</li>`).join('')}</ul>` : ''}
   <div class="project-foot">
-    <span class="project-meta">${r.stars ? `<span class="project-stars">${ICON.star}<span>${r.stars}</span></span>` : ''}${
-      r.stars && r.year ? '<span class="meta-sep" aria-hidden="true">·</span>' : ''
-    }${r.year ? `<span class="project-year">${r.year}</span>` : ''}</span>
+    <span class="project-meta">${r.stars ? `<span class="project-stars">${ICON.star}<span>${r.stars}</span></span>` : ''}</span>
     <span class="project-links">
       <a class="project-link" href="${r.url}" target="_blank" rel="noopener noreferrer">源码 ${ICON.arrowUpRight}</a>
       ${r.highlight ? `<a class="project-link" href="${r.highlight}" target="_blank" rel="noopener noreferrer">演示 ${ICON.arrowUpRight}</a>` : ''}
@@ -269,13 +264,13 @@ function projectCard(r, { compact = false, headingLevel = 3 } = {}) {
 </article>`;
 }
 
-function postListItem(p) {
+function postListItem(p, headingLevel = 3) {
   const haystack = [p.title, p.summary, p.category, ...p.tags].join(' ');
+  const H = `h${headingLevel}`;
   return `<li class="post-item" data-cat="${esc(p.category)}" data-tags="${esc(p.tags.join(','))}" data-text="${esc(haystack)}">
   <a class="post-item-link" href="${p.url}">
-    <span class="post-item-date">${shortDate(p.date)}</span>
     <div class="post-item-main">
-      <h3 class="post-item-title">${esc(p.title)}</h3>
+      <${H} class="post-item-title">${esc(p.title)}</${H}>
       <span class="post-item-summary">${esc(p.summary)}</span>
       <span class="post-item-meta"><span class="post-item-cat">${esc(p.category)}</span><span class="post-item-time">${p.minutes} 分钟</span>${
         p.tags.slice(0, 2).map((t) => `<span class="post-item-tag">#${esc(t)}</span>`).join('')
@@ -354,14 +349,14 @@ function homePage() {
       </div>
       <div class="panel-body">
         <p class="panel-line"><span class="panel-prompt" aria-hidden="true">$</span> whoami</p>
-        <p class="panel-out">${esc(site.realName)} · ${esc(site.role)}</p>
+        <p class="panel-out">${esc(site.name)} · ${esc(site.role)}</p>
         <p class="panel-line"><span class="panel-prompt" aria-hidden="true">$</span> cat stack.txt</p>
         <p class="panel-out panel-out-dim">Unity / C# / C++ / HLSL / Lua</p>
         <p class="panel-line"><span class="panel-prompt" aria-hidden="true">$</span> ls ./now/</p>
         <p class="panel-out panel-out-dim">writing-notes/&nbsp;&nbsp;building-games/&nbsp;&nbsp;reading-papers/</p>
         <p class="panel-line"><span class="panel-prompt" aria-hidden="true">$</span> <span class="panel-cursor" aria-hidden="true"></span></p>
       </div>
-      <div class="panel-foot"><span class="status-dot" aria-hidden="true"></span>最近更新 · ${fmtDate(lastPostDate)}</div>
+      <div class="panel-foot"><span class="status-dot" aria-hidden="true"></span>状态 · 持续更新中</div>
     </aside>
   </div>
 </section>
@@ -371,7 +366,7 @@ function homePage() {
     <div class="stat"><span class="stat-value">${posts.length}</span><span class="stat-label">篇技术文章</span></div>
     <div class="stat"><span class="stat-value">${repos.length}</span><span class="stat-label">个公开仓库</span></div>
     <div class="stat"><span class="stat-value">${playableGames.length}</span><span class="stat-label">个可玩游戏</span></div>
-    <div class="stat"><span class="stat-value">${sinceYear}</span><span class="stat-label">年起持续写作</span></div>
+    <div class="stat"><span class="stat-value">${totalStars}</span><span class="stat-label">GitHub 星标</span></div>
   </div>
 </section>
 
@@ -403,7 +398,7 @@ function homePage() {
     </header>
     ${
       latest.length
-        ? `<ol class="post-list">${latest.map(postListItem).join('\n      ')}</ol>`
+        ? `<ol class="post-list">${latest.map((p) => postListItem(p)).join('\n      ')}</ol>`
         : '<p class="empty-state">文章正在整理中…</p>'
     }
   </div>
@@ -467,8 +462,8 @@ function homePage() {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'Person',
-      name: site.realName,
-      alternateName: site.name,
+      name: site.name,
+      alternateName: site.handle,
       url: site.siteUrl,
       email: site.email,
       sameAs: [site.github],
@@ -521,22 +516,14 @@ function blogPage() {
   for (const p of posts) for (const t of p.tags) tagCounts.set(t, (tagCounts.get(t) || 0) + 1);
   const topTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
 
-  const byYear = years
-    .map((y) => {
-      const list = posts.filter((p) => p.date.startsWith(y));
-      return `<section class="archive-year" data-year="${y}">
-      <h2 class="year-title"><span class="year-num">${y}</span><span class="year-count">${list.length} 篇</span></h2>
-      <ol class="post-list">${list.map(postListItem).join('\n        ')}</ol>
-    </section>`;
-    })
-    .join('\n    ');
+  const allPosts = `<ol class="post-list">${posts.map((p) => postListItem(p, 2)).join('\n      ')}</ol>`;
 
   const content = `
 <section class="page-head">
   <div class="container">
     <p class="section-kicker">Writing</p>
     <h1 class="page-title">文章归档</h1>
-    <p class="page-desc">${posts.length} 篇文章，从 ${years[years.length - 1] || sinceYear} 年写到现在。按标签和关键词筛一筛，或者从最近的开始读。</p>
+    <p class="page-desc">${posts.length} 篇文章，按分类或关键词筛一筛，也可以直接从头读下去。</p>
     <ul class="page-tags" aria-label="热门标签">
       ${topTags.map(([t, n]) => `<li><button class="tag tag-btn" type="button" data-filter-jump="${esc(t)}" data-target="#post-list">#${esc(t)} <span class="tag-count">${n}</span></button></li>`).join('')}
     </ul>
@@ -556,7 +543,7 @@ function blogPage() {
       <p class="filter-count" data-filter-count data-target="#post-list" aria-live="polite"></p>
     </div>
     <div id="post-list">
-      ${byYear || '<p class="empty-state">文章正在整理中…</p>'}
+      ${posts.length ? allPosts : '<p class="empty-state">文章正在整理中…</p>'}
     </div>
     <p class="empty-state filter-empty" data-filter-empty hidden>没有匹配的文章，换个关键词试试。</p>
   </div>
@@ -594,8 +581,6 @@ function postPage(p, idx) {
       <h1 class="post-title">${esc(p.title)}</h1>
       ${p.summary ? `<p class="post-summary">${esc(p.summary)}</p>` : ''}
       <div class="post-meta">
-        <time datetime="${p.date}">${fmtDate(p.date)}</time>
-        <span class="meta-sep" aria-hidden="true">·</span>
         <span>${ICON.clock}${p.minutes} 分钟读完</span>
         <span class="meta-sep" aria-hidden="true">·</span>
         <span class="post-category">${esc(p.category)}</span>
@@ -663,8 +648,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '@type': 'BlogPosting',
       headline: p.title,
       description: p.summary,
-      datePublished: p.date,
-      author: { '@type': 'Person', name: site.realName, url: site.siteUrl },
+      author: { '@type': 'Person', name: site.name, url: site.siteUrl },
       mainEntityOfPage: `${site.siteUrl}${p.url}`,
       keywords: p.tags.join(', '),
       articleSection: p.category,
@@ -778,7 +762,6 @@ function feed() {
       <title>${esc(p.title)}</title>
       <link>${site.siteUrl}${p.url}</link>
       <guid>${site.siteUrl}${p.url}</guid>
-      <pubDate>${new Date(`${p.date}T09:00:00+08:00`).toUTCString()}</pubDate>
       <category>${esc(p.category)}</category>
       <description>${esc(p.summary)}</description>
     </item>`
@@ -791,7 +774,6 @@ function feed() {
     <link>${site.siteUrl}/</link>
     <description>${esc(site.description)}</description>
     <language>zh-CN</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${items}
   </channel>
 </rss>`;
@@ -826,7 +808,7 @@ function build() {
 
   // meta
   write('sitemap.xml', sitemap());
-  write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${site.siteUrl}/sitemap.xml\n`);
+  write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /content/\nDisallow: /design/\nDisallow: /data/\nDisallow: /tools/\nDisallow: /games/_tests/\nDisallow: /games/_tools/\nSitemap: ${site.siteUrl}/sitemap.xml\n`);
   write('feed.xml', feed());
 
   // legacy URL redirects (old GitHub Pages paths)

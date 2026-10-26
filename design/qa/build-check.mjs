@@ -68,7 +68,7 @@ function readJson(p) {
 
 const site = readJson('data/site.json');
 if (site) {
-  for (const k of ['name', 'realName', 'siteUrl', 'title', 'description', 'email']) {
+  for (const k of ['name', 'siteUrl', 'title', 'description', 'email']) {
     if (!site[k]) fail('data/site.json', 'SITE_FIELD', `missing site.${k}`);
   }
   if (site.siteUrl && !/^https:\/\//.test(site.siteUrl)) fail('data/site.json', 'SITE_URL', 'siteUrl is not https');

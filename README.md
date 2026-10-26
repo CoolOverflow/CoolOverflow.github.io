@@ -1,6 +1,6 @@
 # cooloverflow.github.io
 
-Amuda（谢宗德）的个人主页与技术博客 — **https://cooloverflow.github.io/**
+Amuda 的个人主页与技术博客 — **https://cooloverflow.github.io/**
 
 > 游戏开发 / 图形学 / 引擎。写文章、放项目，还有几个打开就能玩的小游戏。
 
@@ -86,4 +86,4 @@ GitHub Pages → 分支 `master` → 根目录。仓库根的 `.nojekyll` 关闭
 
 ## 许可
 
-文章内容 © 谢宗德，转载请注明出处。代码部分（`tools/`、`assets/js/`、`games/`）可随意参考。
+文章内容 © Amuda，转载请注明出处。代码部分（`tools/`、`assets/js/`、`games/`）可随意参考。

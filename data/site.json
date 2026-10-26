@@ -1,6 +1,5 @@
 {
   "name": "Amuda",
-  "realName": "谢宗德",
   "handle": "CoolOverflow",
   "siteUrl": "https://cooloverflow.github.io",
   "role": "Game Developer / Graphics",
@@ -9,7 +8,6 @@
   "description": "游戏开发者的个人主页与博客：3D 数学、计算机图形学、引擎实现，还有一些可以直接在浏览器里玩的小游戏。",
   "email": "dolamixie@163.com",
   "github": "https://github.com/CoolOverflow",
-  "startYear": 2019,
   "heroTitleLine1": "在像素与数学之间，",
   "heroTitleLine2": "把游戏做出来。",
   "lead": "我是一名游戏开发工程师。这里放着我学习图形学、3D 数学和引擎实现时踩过的坑、想明白的事，以及一些可以直接打开就玩的小游戏。",
