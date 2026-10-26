@@ -1,0 +1,288 @@
+[
+  {
+    "id": "FamicomSimulator",
+    "name": "FamicomSimulator",
+    "url": "https://github.com/CoolOverflow/FamicomSimulator",
+    "description": "C# 手写 6502 CPU 与 PPU，从零实现可跑测试 ROM 的 FC 模拟器",
+    "story": "照着 nesdev wiki 和 StepFC 的思路，用 C# 从 6502 指令、寻址模式一行行写起，再补 PPU 的扫描线与精灵渲染，最后用 OpenTK 开窗口出画面。仓库里带着 nestest 与 colortest 两个 ROM，方便逐指令对拍，调通那一刻确实是模拟器最有成就感的瞬间。",
+    "category": "引擎学习",
+    "language": "C#",
+    "stars": 0,
+    "year": 2024,
+    "tags": [
+      "模拟器",
+      "C#",
+      "CPU/PPU"
+    ],
+    "featured": true,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "TinyRendererLearn",
+    "name": "TinyRendererLearn",
+    "url": "https://github.com/CoolOverflow/TinyRendererLearn",
+    "description": "手写软件光栅化渲染器，实现 Gouraud、法线贴图与阴影贴图",
+    "story": "从画线、画三角形开始逐课复刻 tinyrenderer：重心坐标插值、Z-Buffer、Gouraud 着色，再到法线贴图、阴影贴图和屏幕空间后处理。每课一个独立 shader 文件配 CMake 工程，可以单独跑起来对比效果，是理解“管线每步在算什么”最直接的方式。",
+    "category": "引擎学习",
+    "language": "C++",
+    "stars": 0,
+    "year": 2024,
+    "tags": [
+      "软件渲染",
+      "C++",
+      "光栅化"
+    ],
+    "featured": true,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "ExcelAsPixelShader",
+    "name": "ExcelAsPixelShader",
+    "url": "https://github.com/CoolOverflow/ExcelAsPixelShader",
+    "description": "把 Excel 单元格当像素，用 VBA 宏跑光线步进，慢到离谱",
+    "story": "看到“Excel 也能当 GPU”的脑洞后动手验证：把每个单元格当一个像素，用 VBA 宏在单元格上跑光线步进，算完直接刷单元格背景色。画面确实能出来，代价是算一张图要等很久——但也算用最笨的方式体会了一次并行度对渲染性能的意义。",
+    "category": "图形学",
+    "language": "Visual Basic .NET",
+    "stars": 2,
+    "year": 2023,
+    "tags": [
+      "光线步进",
+      "Excel",
+      "VB.NET"
+    ],
+    "featured": true,
+    "fork": false,
+    "highlight": "https://blog.csdn.net/qq_38680728/article/details/129433460"
+  },
+  {
+    "id": "UnityParticleSystemMemoryOptimization",
+    "name": "UnityParticleSystemMemoryOptimization",
+    "url": "https://github.com/CoolOverflow/UnityParticleSystemMemoryOptimization",
+    "description": "用粒子系统池加配置类复用，压掉 Unity 粒子反复实例化的内存开销",
+    "story": "照 Unity 官方性能指南做的实验：不再给每种特效各存一个粒子系统，而是用通用对象池 + 一个配置数据类，需要时把参数刷到对象上。实测粒子系统内存从 65.7M 降到 16.7M 配置 + 10.7M 场景，也顺带记下了“停用不释放、只有销毁才回收内存”这个容易踩的坑。",
+    "category": "游戏引擎",
+    "language": "C#",
+    "stars": 12,
+    "year": 2023,
+    "tags": [
+      "Unity",
+      "性能优化",
+      "内存"
+    ],
+    "featured": true,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "SimpleFluidSimulation",
+    "name": "SimpleFluidSimulation",
+    "url": "https://github.com/CoolOverflow/SimpleFluidSimulation",
+    "description": "用元胞自动机、SPH 与 SDF 渲染三种思路实现流体模拟",
+    "story": "把流体模拟的几条常见路线各写了一遍：元胞自动机用格子演化，最短平快；SPH 给粒子加核函数算密度、压强和粘性；第三版干脆把粒子场当 SDF 交给渲染。三个脚本都带结果 GIF，适合横向看不同方法在效果和开销上怎么取舍。",
+    "category": "图形学",
+    "language": "Python",
+    "stars": 0,
+    "year": 2022,
+    "tags": [
+      "流体模拟",
+      "Python",
+      "SPH"
+    ],
+    "featured": true,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "ShadertoyNNImage",
+    "name": "ShadertoyNNImage",
+    "url": "https://github.com/CoolOverflow/ShadertoyNNImage",
+    "description": "把神经网络权重翻译成 GLSL 常量，用着色器实时还原参考图",
+    "story": "先跑 main.py 训练一个小网络逼近参考图，再用 model_to_c.py 把权重导出成 C 代码，直接粘进 Shadertoy 片段着色器。图像不再是贴图，而是一组长到离谱的常量。训练和渲染因此拆成两条能分别验证的链路，也算亲手摸了一次“权重即数据”的边界。",
+    "category": "图形学",
+    "language": "GLSL",
+    "stars": 3,
+    "year": 2022,
+    "tags": [
+      "Shader",
+      "神经网络",
+      "GLSL"
+    ],
+    "featured": true,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "claude-code",
+    "name": "claude-code",
+    "url": "https://github.com/CoolOverflow/claude-code",
+    "description": "Claude Code 公开源码快照的镜像，供供应链与安全研究",
+    "story": "ultraworkers/claw-code 的镜像：2026 年 3 月随 npm 包的 source map 暴露出来的 Claude Code 源码快照。仓库只做归档与阅读，README 写明了研究目的和版权归属，不提供可运行产物。",
+    "category": "工具",
+    "language": "Markdown",
+    "stars": 0,
+    "year": 2026,
+    "tags": [
+      "AI 编程",
+      "源码研究",
+      "fork"
+    ],
+    "featured": false,
+    "fork": true,
+    "highlight": "https://x.com/Fried_rice/status/2038894956459290963"
+  },
+  {
+    "id": "CoolOverflow.github.io",
+    "name": "CoolOverflow.github.io",
+    "url": "https://github.com/CoolOverflow/CoolOverflow.github.io",
+    "description": "个人技术博客，记录游戏开发与图形学的学习笔记与踩坑",
+    "story": "2019 年开的 GitHub Pages 博客，用 Jekyll 的 minimal 主题按月归档学习笔记，记录游戏开发与图形学里走过的路。这次改版会把它从“文章列表”变成能展示项目和经历的个人主页。",
+    "category": "其它",
+    "language": "HTML",
+    "stars": 0,
+    "year": 2019,
+    "tags": [
+      "博客",
+      "Jekyll",
+      "学习笔记"
+    ],
+    "featured": false,
+    "fork": false,
+    "highlight": "https://cooloverflow.github.io/"
+  },
+  {
+    "id": "3D_ChineseInkPaintingStyleShader_URP",
+    "name": "3D_ChineseInkPaintingStyleShader_URP",
+    "url": "https://github.com/CoolOverflow/3D_ChineseInkPaintingStyleShader_URP",
+    "description": "URP 下的 3D 中国水墨风渲染，描边与分层墨色做出宣纸质感",
+    "story": "fork 自 sacshadow 的 URP 中国水墨渲染工程，在本地跑通并补了自己的效果截图；水墨的分层墨色与轮廓描边都在 Unity 里实现，可作为风格化渲染或水墨题材的参考实现。",
+    "category": "图形学",
+    "language": "ShaderLab",
+    "stars": 0,
+    "year": 2025,
+    "tags": [
+      "Shader",
+      "URP",
+      "水墨风格"
+    ],
+    "featured": false,
+    "fork": true,
+    "highlight": null
+  },
+  {
+    "id": "FromPaper",
+    "name": "FromPaper",
+    "url": "https://github.com/CoolOverflow/FromPaper",
+    "description": "读论文就动手复现：Marching Cubes 等值面与 Perlin 噪声",
+    "story": "读论文后顺手落地的复现仓库：C# 写 Perlin 噪声并导出 GIF 观察分形特征，用 Python 实现 Marching Cubes 的查表与等值面三角化，还留了一份 RRDCT 图像处理的未完成尝试（目前只有骨架和前后对比图）。",
+    "category": "AI与算法",
+    "language": "C#",
+    "stars": 0,
+    "year": 2021,
+    "tags": [
+      "算法复现",
+      "MarchingCubes",
+      "Perlin噪声"
+    ],
+    "featured": false,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "ChatGPTBotInFlutter",
+    "name": "ChatGPTBotInFlutter",
+    "url": "https://github.com/CoolOverflow/ChatGPTBotInFlutter",
+    "description": "Flutter 写的 ChatGPT 聊天客户端，填入 API Key 即可对话",
+    "story": "2023 年 ChatGPT 刚火时搭的 Flutter 聊天客户端：一个输入框、一个消息列表，直接请求 OpenAI 接口，API Key 留在本地配置里。代码量不大，但跑通了移动端接大模型的最小闭环。",
+    "category": "工具",
+    "language": "Dart",
+    "stars": 0,
+    "year": 2023,
+    "tags": [
+      "Flutter",
+      "Dart",
+      "ChatGPT"
+    ],
+    "featured": false,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "CSharpPersudoRandom",
+    "name": "CSharpPersudoRandom",
+    "url": "https://github.com/CoolOverflow/CSharpPersudoRandom",
+    "description": "可按索引取值的伪随机数，任意下标都能复现同一随机序列",
+    "story": "System.Random 只能顺序取数，没法直接问“第 1024 个随机数是多少”。这个实现换成按索引取值，任意下标都能直接算出同一个结果；README 里还附了用反射存取 System.Random 内部状态的办法，方便老项目不改调用点就能存档和恢复随机序列。",
+    "category": "工具",
+    "language": "C#",
+    "stars": 0,
+    "year": 2023,
+    "tags": [
+      "随机数",
+      "C#",
+      "噪声"
+    ],
+    "featured": false,
+    "fork": false,
+    "highlight": null
+  },
+  {
+    "id": "cpp-game-engine-book",
+    "name": "cpp-game-engine-book",
+    "url": "https://github.com/CoolOverflow/cpp-game-engine-book",
+    "description": "《游戏引擎浅入浅出》配套代码，从 OpenGL 搭到骨骼动画",
+    "story": "ThisisGame 的《游戏引擎浅入浅出》配套仓库，从 OpenGL 环境搭建一路讲到骨骼动画、多线程渲染和阴影，最后落成一个完整小引擎。fork 过来主要是跟着章节跑代码，方便对照书里的实现读源码。",
+    "category": "引擎学习",
+    "language": "Markdown",
+    "stars": 0,
+    "year": 2022,
+    "tags": [
+      "游戏引擎",
+      "教程",
+      "fork"
+    ],
+    "featured": false,
+    "fork": true,
+    "highlight": "http://www.thisisgame.com.cn/tutorial?book=cpp-game-engine-book&lang=zh&md=Introduction.md"
+  },
+  {
+    "id": "LitJsonPolymorphism",
+    "name": "LitJsonPolymorphism",
+    "url": "https://github.com/CoolOverflow/LitJsonPolymorphism",
+    "description": "给 LitJson 补上多态支持，反序列化时自动还原具体子类",
+    "story": "用 LitJson 做配置时发现它反序列化基类列表会丢掉子类类型，于是加上了带类型标记的多态支持：序列化时写入类型名，读回时按标记实例化具体子类。配套的 CSDN 文章把改法和踩过的坑都记录了下来。",
+    "category": "工具",
+    "language": "C#",
+    "stars": 3,
+    "year": 2022,
+    "tags": [
+      "JSON",
+      "多态",
+      "C#"
+    ],
+    "featured": false,
+    "fork": false,
+    "highlight": "https://blog.csdn.net/qq_38680728/article/details/119672976"
+  },
+  {
+    "id": "xLua",
+    "name": "xLua",
+    "url": "https://github.com/CoolOverflow/xLua",
+    "description": "腾讯开源的 Unity/C# Lua 热更新方案，支持多平台与热补丁",
+    "story": "腾讯 xLua 的 fork，Unity/C# 侧的 Lua 热更新方案：支持 Android、iOS 等平台，可以只给单个函数打补丁。留在账号里作为热更新方案的参考实现，需要时对照改本地工程。",
+    "category": "游戏引擎",
+    "language": "C#",
+    "stars": 0,
+    "year": 2020,
+    "tags": [
+      "Lua",
+      "热更新",
+      "Unity",
+      "fork"
+    ],
+    "featured": false,
+    "fork": true,
+    "highlight": "https://github.com/Tencent/xLua"
+  }
+]

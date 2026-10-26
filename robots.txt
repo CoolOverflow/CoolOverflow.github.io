@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cooloverflow.github.io/sitemap.xml

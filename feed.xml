@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Amuda · 游戏开发笔记</title>
+    <link>https://cooloverflow.github.io/</link>
+    <description>游戏开发者的个人主页与博客：3D 数学、计算机图形学、引擎实现，还有一些可以直接在浏览器里玩的小游戏。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 26 Oct 2026 04:12:46 GMT</lastBuildDate>
+    <item>
+      <title>线性动态系统-卡尔曼滤波</title>
+      <link>https://cooloverflow.github.io/blog/kalman-filter/</link>
+      <guid>https://cooloverflow.github.io/blog/kalman-filter/</guid>
+      <pubDate>Sun, 29 Dec 2019 01:00:00 GMT</pubDate>
+      <category>机器学习</category>
+      <description>从概率图模型讲起，区分 HMM、卡尔曼滤波和粒子滤波各自适用的场景，再用条件概率一步步推导线性高斯系统的预测—校正递推，帮助你理解滤波为什么能降噪。</description>
+    </item>
+    <item>
+      <title>计算机图形学：Bresenham画线算法</title>
+      <link>https://cooloverflow.github.io/blog/bresenham-line/</link>
+      <guid>https://cooloverflow.github.io/blog/bresenham-line/</guid>
+      <pubDate>Fri, 29 Nov 2019 01:00:00 GMT</pubDate>
+      <category>图形学</category>
+      <description>从斜率为 0 到 1 的简单情形出发，推导 Bresenham 画线算法的增量误差判别式，并给出覆盖四种斜率的 Python + turtle 完整实现，帮你搞懂直线光栅化如何逐像素选点。</description>
+    </item>
+    <item>
+      <title>Python绘图工具turtle</title>
+      <link>https://cooloverflow.github.io/blog/python-turtle/</link>
+      <guid>https://cooloverflow.github.io/blog/python-turtle/</guid>
+      <pubDate>Thu, 28 Nov 2019 01:00:00 GMT</pubDate>
+      <category>编程语言</category>
+      <description>介绍 Python 自带绘图库 turtle 的基本用法，用爱心、L 系统分形、饼干和渐进多边形四个小例子，演示海龟移动、转向、填充与循环绘图技巧，适合作为绘图入门练习。</description>
+    </item>
+    <item>
+      <title>Lua语言学习1：基本语法和数据类型</title>
+      <link>https://cooloverflow.github.io/blog/learn-lua-basic-01/</link>
+      <guid>https://cooloverflow.github.io/blog/learn-lua-basic-01/</guid>
+      <pubDate>Fri, 08 Nov 2019 01:00:00 GMT</pubDate>
+      <category>编程语言</category>
+      <description>Lua 入门学习笔记：从安装与运行环境讲起，梳理 nil、table 等八种数据类型，再用可直接运行的示例说明赋值、循环、条件、函数与闭包等基本语法，适合快速上手速查。</description>
+    </item>
+    <item>
+      <title>3D数学中角位移的表示：矩阵、欧拉角和四元数</title>
+      <link>https://cooloverflow.github.io/blog/angular-displacement-math/</link>
+      <guid>https://cooloverflow.github.io/blog/angular-displacement-math/</guid>
+      <pubDate>Thu, 31 Oct 2019 01:00:00 GMT</pubDate>
+      <category>数学</category>
+      <description>梳理三维旋转的三种表示：旋转矩阵、欧拉角与四元数的定义、换算思路和优缺点，并推导四元数的对数、指数、求幂与 slerp/squad 插值，帮你把 3D 数学基础打牢。</description>
+    </item>
+  </channel>
+</rss>

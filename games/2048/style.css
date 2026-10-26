@@ -1,0 +1,242 @@
+/* 2048 专属样式：棋盘 / 瓷砖 / 侧边文字 */
+
+.game-shell[data-game="2048"] {
+  --accent: #5ce1e6;
+  --accent-rgb: 92, 225, 230;
+  --on-accent: #03161a;
+}
+
+.stage-2048 {
+  --pad: 14px;
+  --gap: 10px;
+}
+
+.board {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 84%; /* 老浏览器兜底，下一行优先 */
+  height: calc(100% - clamp(18px, 5cqh, 46px));
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 18px;
+  padding: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+    #0d141b;
+  border: 1px solid var(--line-strong);
+  box-shadow:
+    0 26px 60px -30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+    0 0 70px -34px rgba(var(--accent-rgb), 0.55);
+  touch-action: none;
+}
+
+.board-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: var(--gap);
+  padding: var(--pad);
+}
+
+.board-cell {
+  border-radius: 11px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+    rgba(6, 10, 14, 0.55);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.035) inset;
+}
+
+.tiles {
+  position: absolute;
+  inset: 0;
+}
+
+.tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: #d7e6f2;
+  background: #1b2a36;
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.06) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.22) inset,
+    0 8px 18px -10px rgba(0, 0, 0, 0.75);
+  will-change: transform;
+  transition:
+    transform 0.13s cubic-bezier(0.22, 0.72, 0.24, 1),
+    background-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+/* 数字越大越亮，颜色跟随站点 accent 体系：青 → 绿 → 琥珀 → 珊瑚 */
+.tile[data-value="2"] {
+  background: #1b2834;
+  color: #b7c9d8;
+}
+.tile[data-value="4"] {
+  background: #1e3446;
+  color: #d5ecfa;
+}
+.tile[data-value="8"] {
+  background: #14494d;
+  color: #8ff5f5;
+  box-shadow: 0 0 22px -8px rgba(92, 225, 230, 0.55), 0 2px 0 rgba(255, 255, 255, 0.07) inset;
+}
+.tile[data-value="16"] {
+  background: #0e5d61;
+  color: #c8ffff;
+  box-shadow: 0 0 26px -8px rgba(92, 225, 230, 0.7), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+}
+.tile[data-value="32"] {
+  background: #114a30;
+  color: #9dffc9;
+  box-shadow: 0 0 26px -8px rgba(124, 255, 178, 0.55), 0 2px 0 rgba(255, 255, 255, 0.07) inset;
+}
+.tile[data-value="64"] {
+  background: #136a41;
+  color: #ddffe9;
+  box-shadow: 0 0 30px -8px rgba(124, 255, 178, 0.7), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+}
+.tile[data-value="128"] {
+  background: #5f4410;
+  color: #ffe6a8;
+  box-shadow: 0 0 30px -8px rgba(255, 200, 87, 0.55), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+}
+.tile[data-value="256"] {
+  background: #7d590d;
+  color: #fff2c9;
+  box-shadow: 0 0 34px -8px rgba(255, 200, 87, 0.7), 0 2px 0 rgba(255, 255, 255, 0.09) inset;
+}
+.tile[data-value="512"] {
+  background: #8d3a25;
+  color: #ffd8c9;
+  box-shadow: 0 0 34px -8px rgba(255, 140, 90, 0.55), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+}
+.tile[data-value="1024"] {
+  background: #932542;
+  color: #ffd3df;
+  box-shadow: 0 0 38px -8px rgba(255, 120, 160, 0.6), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+}
+.tile[data-value="2048"] {
+  background: linear-gradient(160deg, #ffd97a, #ffc857 60%, #f0a93a);
+  color: #241706;
+  box-shadow:
+    0 0 44px -6px rgba(255, 200, 87, 0.85),
+    0 2px 0 rgba(255, 255, 255, 0.35) inset,
+    0 10px 24px -10px rgba(255, 200, 87, 0.6);
+}
+.tile[data-value="4096"],
+.tile[data-value="8192"],
+.tile[data-value="16384"] {
+  background: linear-gradient(160deg, #a8fff2, #5ce1e6 55%, #21b9c0);
+  color: #04231f;
+  box-shadow: 0 0 46px -6px rgba(92, 225, 230, 0.9);
+}
+
+.tile.is-new {
+  animation: tile-pop 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+
+.tile.is-merged {
+  animation: tile-merge 0.2s ease both;
+}
+
+.tile.is-vanishing {
+  animation: tile-vanish 0.14s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes tile-pop {
+  0% {
+    opacity: 0;
+    filter: brightness(1.7);
+    scale: 0.55;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes tile-merge {
+  0% {
+    filter: brightness(1.85);
+    scale: 1.12;
+  }
+  100% {
+    filter: brightness(1);
+    scale: 1;
+  }
+}
+
+@keyframes tile-vanish {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.65;
+  }
+}
+
+/* 两侧的等宽装饰文字，小屏隐藏 */
+.board-rail {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  font: 600 10px/1 var(--mono);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--dim);
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.board-rail span {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.board-rail--left {
+  left: clamp(14px, 2.4vw, 30px);
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.board-rail--right {
+  right: clamp(14px, 2.4vw, 30px);
+}
+
+@media (max-width: 900px) {
+  .board-rail {
+    display: none;
+  }
+
+  .board {
+    height: calc(100% - clamp(10px, 3cqh, 22px));
+  }
+}
+
+@media (max-width: 460px) {
+  .board-cell,
+  .tile {
+    border-radius: 8px;
+  }
+}

@@ -1,0 +1,12 @@
+# local-only artifacts (never served / committed)
+design/shots/
+debug.log
+.chrome-tmp/
+node_modules/
+*.tmp
+
+# headless chrome profiles created while smoke-testing the game pages
+games/_tests/.chrome-profile*/
+
+design/qa/results/
+

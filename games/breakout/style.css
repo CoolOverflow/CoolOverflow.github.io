@@ -1,0 +1,20 @@
+/* 打砖块专属样式：主题变量 + 舞台细节 */
+
+.game-shell[data-game="breakout"] {
+  --accent: #ffc857;
+  --accent-rgb: 255, 200, 87;
+  --on-accent: #1a1102;
+}
+
+.stage-breakout {
+  background:
+    radial-gradient(100% 100% at 50% 0%, #101a24, #070b10 72%);
+}
+
+.stage-breakout .shell-stat--accent .shell-stat-value {
+  transition: transform 0.12s ease;
+}
+
+.stage-breakout .shell-stat--accent.is-bump .shell-stat-value {
+  transform: scale(1.14);
+}

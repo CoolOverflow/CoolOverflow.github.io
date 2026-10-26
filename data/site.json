@@ -1,0 +1,26 @@
+{
+  "name": "Amuda",
+  "realName": "谢宗德",
+  "handle": "CoolOverflow",
+  "siteUrl": "https://cooloverflow.github.io",
+  "role": "Game Developer / Graphics",
+  "title": "Amuda · 游戏开发笔记",
+  "tagline": "在像素与数学之间，把游戏做出来。",
+  "description": "游戏开发者的个人主页与博客：3D 数学、计算机图形学、引擎实现，还有一些可以直接在浏览器里玩的小游戏。",
+  "email": "dolamixie@163.com",
+  "github": "https://github.com/CoolOverflow",
+  "startYear": 2019,
+  "heroTitleLine1": "在像素与数学之间，",
+  "heroTitleLine2": "把游戏做出来。",
+  "lead": "我是一名游戏开发工程师。这里放着我学习图形学、3D 数学和引擎实现时踩过的坑、想明白的事，以及一些可以直接打开就玩的小游戏。",
+  "bio": "日常和引擎、渲染管线、C# 与 Lua 打交道。相信「理解了原理，才敢改引擎」，所以习惯把学到的数学和图形学算法写成能跑起来的代码，再把过程记成文章。写作不追热点，只记录真的动手做过的东西。",
+  "skills": [
+    { "group": "引擎与语言", "items": ["Unity", "C#", "C++", "Lua", "Python"] },
+    { "group": "图形与数学", "items": ["渲染管线", "Shader / HLSL", "3D 数学", "线性代数", "信号处理"] },
+    { "group": "方向", "items": ["引擎工具链", "玩法原型", "图形实验", "小游戏"] }
+  ],
+  "links": [
+    { "label": "GitHub", "href": "https://github.com/CoolOverflow", "icon": "github" },
+    { "label": "Email", "href": "mailto:dolamixie@163.com", "icon": "mail" }
+  ]
+}

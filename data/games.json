@@ -1,0 +1,45 @@
+[
+  {
+    "id": "snake",
+    "title": "贪吃蛇",
+    "subtitle": "经典复刻 · Canvas",
+    "desc": "方向键或滑动转向，吃能量块变长，撞墙即结束。支持加速档位、暂停与最高分记录。",
+    "path": "/games/snake/",
+    "tags": ["街机", "Canvas"],
+    "accent": "#7CFFB2",
+    "status": "playable",
+    "difficulty": "入门"
+  },
+  {
+    "id": "2048",
+    "title": "2048",
+    "subtitle": "数字合并 · DOM",
+    "desc": "滑动合并相同数字，一步步凑出 2048。带合并动画、撤销一步和最高分记录。",
+    "path": "/games/2048/",
+    "tags": ["益智", "数字"],
+    "accent": "#5CE1E6",
+    "status": "playable",
+    "difficulty": "轻松"
+  },
+  {
+    "id": "breakout",
+    "title": "打砖块",
+    "subtitle": "霓虹街机 · Canvas",
+    "desc": "移动挡板反弹小球，清空 6 关霓虹砖块。带粒子特效、击碎得分和 3 条命。",
+    "path": "/games/breakout/",
+    "tags": ["街机", "Canvas"],
+    "accent": "#FFC857",
+    "status": "playable",
+    "difficulty": "进阶"
+  },
+  {
+    "id": "coming-soon",
+    "title": "下一个游戏?",
+    "subtitle": "Coming Soon",
+    "desc": "这里留给你的下一个作品。按 games/README.md 的约定添加即可自动出现在游戏厅。",
+    "tags": ["待定"],
+    "accent": "#7CFFB2",
+    "status": "soon",
+    "difficulty": ""
+  }
+]

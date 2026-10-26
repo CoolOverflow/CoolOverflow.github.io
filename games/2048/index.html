@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>2048 · 游戏厅 | cooloverflow</title>
+  <meta name="description" content="浏览器里直接玩的 2048：方向键 / WASD / 触屏滑动合并数字，支持撤销一步、合并动画和最高分记录。纯前端实现，打开即玩。">
+  <meta name="theme-color" content="#0B0F14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0F14'/%3E%3Crect x='8' y='8' width='16' height='16' rx='4' fill='%235CE1E6'/%3E%3C/svg%3E">
+  <link rel="canonical" href="https://cooloverflow.github.io/games/2048/">
+  <link rel="stylesheet" href="../_shared/game-shell.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="game-shell" data-game="2048">
+  <header class="shell-topbar">
+    <a class="shell-back" href="../../">
+      <span class="shell-back-arrow" aria-hidden="true">←</span>
+      <span class="shell-back-label">返回博客</span>
+    </a>
+    <div class="shell-title">
+      <h1>2048</h1>
+      <p class="shell-sub">Merge The Tiles</p>
+    </div>
+    <div class="shell-actions">
+      <button class="shell-btn" type="button" data-action="undo" title="撤销一步（U / Backspace）" disabled>撤销</button>
+      <button class="shell-btn" type="button" data-action="restart" title="重新开始（R）">重开</button>
+      <button class="shell-btn shell-btn--icon" type="button" data-action="fullscreen" title="全屏" aria-label="全屏">⛶</button>
+    </div>
+  </header>
+
+  <main class="shell-main">
+    <div class="shell-hud">
+      <div class="shell-stat shell-stat--accent">
+        <span class="shell-stat-label">分数</span>
+        <strong class="shell-stat-value" data-score>0</strong>
+      </div>
+      <div class="shell-stat shell-stat--dim">
+        <span class="shell-stat-label">最高分</span>
+        <strong class="shell-stat-value" data-best>0</strong>
+      </div>
+      <div class="shell-stat">
+        <span class="shell-stat-label">步数</span>
+        <strong class="shell-stat-value" data-moves>0</strong>
+      </div>
+      <div class="shell-stat">
+        <span class="shell-stat-label">最大块</span>
+        <strong class="shell-stat-value" data-max>0</strong>
+      </div>
+    </div>
+
+    <div class="shell-stage-area">
+      <div class="shell-stage stage-2048" data-stage>
+        <div class="board-rail board-rail--left" aria-hidden="true"><span>2048 · MERGE THE TILES</span></div>
+        <div class="board" data-board aria-label="2048 棋盘">
+          <div class="board-grid" data-grid></div>
+          <div class="tiles" data-tiles></div>
+        </div>
+        <div class="board-rail board-rail--right" aria-hidden="true"><span>SWIPE / ARROWS TO MERGE</span></div>
+        <div class="shell-overlay" data-overlay>
+          <div class="shell-card">
+            <span class="shell-card-kicker" data-overlay-kicker>Result</span>
+            <h2 data-overlay-title>游戏结束</h2>
+            <p data-overlay-text></p>
+            <div class="shell-card-actions">
+              <button class="shell-btn shell-btn--primary" type="button" data-overlay-primary>再来一局</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="shell-hint">
+      <span class="hint-item key-only"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> / <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 滑动</span>
+      <span class="hint-item touch-only">在棋盘上滑动</span>
+      <span class="hint-item"><kbd>U</kbd> 撤销一步</span>
+      <span class="hint-item"><kbd>R</kbd> 重开</span>
+      <span class="hint-item">相同数字相撞会合并，目标是 2048</span>
+    </p>
+    <p class="shell-rotate-tip">建议横屏游玩，体验更佳</p>
+  </main>
+
+  <script src="logic.classic.js"></script>
+  <script src="../_shared/game-shell.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

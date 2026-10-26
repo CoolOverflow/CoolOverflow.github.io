@@ -1,0 +1,36 @@
+/* 贪吃蛇专属样式：主题变量 + 少量点缀，其余交给 game-shell.css */
+
+.game-shell[data-game="snake"] {
+  --accent: #7cffb2;
+  --accent-rgb: 124, 255, 178;
+  --on-accent: #04140b;
+}
+
+/* 棋盘外围的角落刻度，强化"终端 / 街机"味道 */
+.game-shell[data-game="snake"] .shell-stage::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 9px;
+  background:
+    linear-gradient(var(--line-strong), var(--line-strong)) left top / 14px 1px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) left top / 1px 14px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) right top / 14px 1px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) right top / 1px 14px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) left bottom / 14px 1px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) left bottom / 1px 14px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) right bottom / 14px 1px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) right bottom / 1px 14px no-repeat;
+  opacity: 0.7;
+}
+
+.game-shell[data-game="snake"] .shell-stat--accent .shell-stat-value {
+  transition: transform 0.12s ease;
+}
+
+/* 分数跳动 */
+.game-shell[data-game="snake"] .shell-stat--accent.is-bump .shell-stat-value {
+  transform: scale(1.14);
+}
