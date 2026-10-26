@@ -45,6 +45,15 @@ node tools/shots.mjs                                  # 批量截图到 design/s
 
 构建产物（`index.html`、`blog/`、`projects/`、`games/index.html`、`sitemap.xml`、`feed.xml`）直接写在仓库根目录，`git push` 即发布。
 
+## 验收 / QA
+
+```bash
+node design/qa/run-all.mjs        # 构建 + 链接 + 真浏览器交互 + 游戏逻辑测试（一条命令）
+node design/qa/run-all.mjs --shots  # 顺便刷新 design/shots/ 截图
+```
+
+脚本与失败条件见 `design/qa/README.md`，本次改版的验收结论见 `design/QA-REPORT.md`。
+
 ## 写一篇新文章
 
 在 `content/posts/` 下新建 `我的文章.md`：

@@ -723,6 +723,13 @@ h1 {
   border-color: var(--line-strong);
 }
 
+/* 热门标签里的计数：和标签名拉开距离并弱化，避免 "#Python 2" 被读成 "#Python2" */
+.tag-count {
+  margin-left: 4px;
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
 .icon {
   width: 1.05em;
   height: 1.05em;

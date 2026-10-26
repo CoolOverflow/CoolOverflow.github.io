@@ -374,7 +374,13 @@
     };
 
     var onScroll = throttle(function () {
-      var offset = (parseInt(getComputedStyle(root).getPropertyValue('--header-h'), 10) || 68) + 80;
+      // Anchor targets land at scroll-padding-top + scroll-margin-top; the spy
+      // threshold must match that or the just-clicked heading highlights its
+      // predecessor. Fall back to the old header-based heuristic if unsupported.
+      var pad = parseInt(getComputedStyle(root).scrollPaddingTop, 10);
+      var margin = parseInt(getComputedStyle(targets[0]).scrollMarginTop, 10);
+      var headerH = parseInt(getComputedStyle(root).getPropertyValue('--header-h'), 10) || 68;
+      var offset = (isNaN(pad) ? headerH + 16 : pad) + (isNaN(margin) ? 0 : margin) + 2;
       var active = targets[0];
       for (var i = 0; i < targets.length; i++) {
         if (targets[i].getBoundingClientRect().top <= offset) active = targets[i];

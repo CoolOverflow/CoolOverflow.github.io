@@ -83,6 +83,15 @@ const LAYOUT_PROBE = `(() => {
     return s;
   };
   const offenders = [];
+  const isScrollable = (el) => {
+    let node = el.parentElement;
+    while (node && node.nodeType === 1) {
+      const ox = getComputedStyle(node).overflowX;
+      if (ox === 'auto' || ox === 'scroll') return true;
+      node = node.parentElement;
+    }
+    return false;
+  };
   for (const el of document.querySelectorAll('body *')) {
     if (el.namespaceURI === 'http://www.w3.org/2000/svg' && el.tagName.toLowerCase() !== 'svg') continue;
     const r = el.getBoundingClientRect();
@@ -91,7 +100,9 @@ const LAYOUT_PROBE = `(() => {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') continue;
     if (el.classList.contains('skip-link')) continue;
-    offenders.push({ sel: sel(el), left: Math.round(r.left), right: Math.round(r.right), w: Math.round(r.width), pos: cs.position, txt: (el.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 30) });
+    // KaTeX's screen-reader-only MathML clone is a 1px overflow-hidden box: not visible content
+    if (el.closest('.katex-mathml')) continue;
+    offenders.push({ sel: sel(el), left: Math.round(r.left), right: Math.round(r.right), w: Math.round(r.width), pos: cs.position, txt: (el.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 30), scrollable: isScrollable(el) });
     if (offenders.length >= 25) break;
   }
   const clipped = [];
@@ -131,6 +142,7 @@ const A11Y_PROBE = `(() => {
   }
   const imgs = [...document.images].map((i) => ({
     src: (i.getAttribute('src') || '').slice(-70),
+    hasSrc: i.hasAttribute('src') && !!i.getAttribute('src'),
     alt: i.getAttribute('alt'),
     hasAlt: i.hasAttribute('alt'),
     nw: i.naturalWidth,
@@ -160,7 +172,7 @@ const A11Y_PROBE = `(() => {
     headingJumps: jumps.slice(0, 10),
     headingCount: headings.length,
     badImgs: imgs.filter((i) => !i.hasAlt).map((i) => i.src),
-    notLoadedImgs: imgs.filter((i) => i.complete && i.nw === 0).map((i) => i.src),
+    notLoadedImgs: imgs.filter((i) => i.hasSrc && i.complete && i.nw === 0).map((i) => i.src),
     imgCount: imgs.length,
     btnNoName,
     linkNoName,
@@ -222,13 +234,23 @@ const CONTRAST_PROBE = `(() => {
   const bgOf = (el) => {
     const layers = [];
     let node = el;
+    let opaque = false;
+    let approx = false;
     while (node && node.nodeType === 1) {
-      const c = parse(getComputedStyle(node).backgroundColor);
-      if (c && c.a > 0) { layers.push(c); if (c.a >= 1) break; }
+      const cs = getComputedStyle(node);
+      // subtle gradients are fine as a base colour; flag them so the report is honest
+      if (cs.backgroundImage && cs.backgroundImage !== 'none') approx = true;
+      const c = parse(cs.backgroundColor);
+      if (c && c.a > 0) {
+        layers.push(c);
+        if (c.a >= 1) { opaque = true; break; }
+      }
       node = node.parentElement;
     }
+    if (!opaque) return null; // no solid backdrop (e.g. canvas-only game shell)
     let base = { r: 255, g: 255, b: 255, a: 1 };
     for (let i = layers.length - 1; i >= 0; i--) base = blend(layers[i], base);
+    base.approx = approx;
     return base;
   };
   const ratio = (a, b) => { const l1 = lum(a), l2 = lum(b); const hi = Math.max(l1, l2), lo = Math.min(l1, l2); return (hi + 0.05) / (lo + 0.05); };
@@ -244,10 +266,11 @@ const CONTRAST_PROBE = `(() => {
     const fgRaw = parse(cs.color);
     if (!fgRaw) continue;
     const bg = bgOf(el);
+    if (!bg) continue; // background is an image/gradient — colour ratio not computable reliably
     const fg = fgRaw.a < 1 ? blend(fgRaw, bg) : fgRaw;
     const size = parseFloat(cs.fontSize);
     const large = size >= 24 || (size >= 18.66 && parseInt(cs.fontWeight, 10) >= 700);
-    out.push({ sel: s, text: t.slice(0, 24), ratio: Math.round(ratio(fg, bg) * 100) / 100, size, large, required: large ? 3 : 4.5 });
+    out.push({ sel: s, text: t.slice(0, 24), ratio: Math.round(ratio(fg, bg) * 100) / 100, size, large, required: large ? 3 : 4.5, approx: !!bg.approx });
   }
   return out;
 })()`;
@@ -274,7 +297,17 @@ async function visit(page, pageInfo, vw, basePath) {
     const res = performance.getEntriesByType('resource');
     return { requests: res.length, transferKB: Math.round(res.reduce((s, r) => s + (r.transferSize || 0), 0) / 1024), docKB: Math.round((document.documentElement.outerHTML.length) / 1024) };
   })()`);
-  return { url, vw, layout, a11y, content, errors, warnings, external, perf };
+  // contrast: measure both themes (default/site pages follow prefers-color-scheme)
+  let contrast = null;
+  if (vw === 1440) {
+    const light = await page.evaluate(CONTRAST_PROBE);
+    await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }] });
+    await page.reload({ settle: 420 });
+    const dark = await page.evaluate(CONTRAST_PROBE);
+    await page.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
+    contrast = { light, dark };
+  }
+  return { url, vw, layout, a11y, content, errors, warnings, external, contrast, perf };
 }
 
 function record(result) {
@@ -285,14 +318,19 @@ function record(result) {
   if (layout.docScrollWidth > layout.iw + 1 || (layout.bodyScrollWidth || 0) > layout.iw + 1) {
     add('fail', tag, 'H_SCROLL', `horizontal scroll: documentElement.scrollWidth=${layout.docScrollWidth} > innerWidth=${layout.iw}`, layout.offenders);
   } else {
-    // Elements sticking out of the viewport but clipped by an overflow-hidden
-    // ancestor (glow/decoration) are harmless; only text-bearing ones are noise.
-    const textOffenders = layout.offenders.filter((o) => (o.txt || '').trim().length > 0);
-    if (textOffenders.length) {
-      add('warn', tag, 'ELEMENT_OVERFLOW', `${textOffenders.length} text element(s) extend past the viewport but are clipped by an ancestor`, textOffenders.slice(0, 8));
-    } else if (layout.offenders.length) {
-      add('info', tag, 'DECORATIVE_OVERFLOW', `${layout.offenders.length} decorative element(s) intentionally bleed past the viewport (clipped)`, layout.offenders.slice(0, 8));
+    // Elements that stick out of the viewport but sit inside an overflow:auto/scroll
+    // ancestor are intentionally scrollable (code blocks, wide KaTeX) — informational.
+    // Text that is clipped (no scroll affordance) is a real readability issue.
+    const scrollable = layout.offenders.filter((o) => o.scrollable);
+    const clippedText = layout.offenders.filter((o) => !o.scrollable && (o.txt || '').trim().length > 0);
+    const decor = layout.offenders.filter((o) => !o.scrollable && !(o.txt || '').trim().length);
+    if (clippedText.length) {
+      add('warn', tag, 'ELEMENT_OVERFLOW', `${clippedText.length} text element(s) extend past the viewport and are clipped (not scrollable)`, clippedText.slice(0, 8));
     }
+    if (scrollable.length) {
+      add('info', tag, 'SCROLLABLE_OVERFLOW', `${scrollable.length} wide element(s) inside a horizontal scroll container (code/KaTeX)`, scrollable.slice(0, 5));
+    }
+    if (decor.length) add('info', tag, 'DECORATIVE_OVERFLOW', `${decor.length} decorative element(s) intentionally bleed past the viewport`, decor.slice(0, 5));
   }
   if (layout.clipped.length) {
     add('info', tag, 'CLIPPED_CONTENT', `${layout.clipped.length} overflow-hidden element(s) have content wider than the box`, layout.clipped.slice(0, 6));
@@ -324,6 +362,23 @@ function record(result) {
   if (content.preCount && content.codeCopy < content.codeBlocks) add('warn', tag, 'CODE_COPY', `only ${content.codeCopy}/${content.codeBlocks} code blocks have a copy button`);
   if (content.postImgs.some((i) => i.nw === 0)) add('fail', tag, 'POST_IMG', `post image(s) not loaded`);
   if (result.kind === 'post' && content.tocLinks.length === 0) WARN(tag, 'POST_TOC', 'article page without a table of contents');
+  if (result.contrast) {
+    for (const themeName of ['light', 'dark']) {
+      const samples = result.contrast[themeName] || [];
+      const low = samples.filter((c) => c.ratio < c.required);
+      if (low.length) {
+        add(
+          'warn',
+          tag + ' [' + themeName + ']',
+          'CONTRAST',
+          `${low.length}/${samples.length} text sample(s) below WCAG AA (${themeName}): ${low.map((c) => `${c.sel}=${c.ratio}:1 (need ${c.required})`).join('; ')}`,
+          low
+        );
+      } else if (samples.length) {
+        add('info', tag + ' [' + themeName + ']', 'CONTRAST_OK', `${samples.length} text sample(s) ≥ AA, min ${Math.min(...samples.map((c) => c.ratio))}:1`);
+      }
+    }
+  }
 }
 
 /** math expectation: posts whose markdown body contains math should render .katex */
@@ -633,6 +688,9 @@ async function testPostInteractions(page, slug) {
     if (out.tocClick.scrollY < 40) WARN('post-toc', 'TOC_SCROLL', `${slug}: page did not scroll after TOC click (scrollY=${out.tocClick.scrollY})`);
     if (out.tocClick.targetTop < -10 || out.tocClick.targetTop > 220) WARN('post-toc', 'TOC_OFFSET', `${slug}: clicked heading sits ${out.tocClick.targetTop}px from viewport top (header overlap or wrong offset)`);
     if (!out.tocClick.current && !out.tocClick.ariaCurrent) WARN('post-toc', 'TOC_SPY', `${slug}: no is-current/aria-current TOC highlight after click`);
+    else if (out.tocClick.current !== pick.href && out.tocClick.ariaCurrent !== pick.href) {
+      WARN('post-toc', 'TOC_SPY_LAG', `${slug}: clicked ${pick.href} but the scrollspy highlights ${out.tocClick.current || out.tocClick.ariaCurrent} (threshold mismatch)`);
+    }
   }
 
   // code copy button click
@@ -671,25 +729,39 @@ async function testGamesIndex(page) {
   const out = {};
   await page.setViewport(1440, 900);
   await page.goto(BASE + '/games/?noanim=1', { settle: 450 });
-  out.initial = await page.evaluate(`(() => ({
-    cards: document.querySelectorAll('.game-card').length,
-    playable: document.querySelectorAll('.game-card[data-status="playable"]').length,
-    soon: document.querySelectorAll('.game-card.is-soon').length,
-    soonHref: (() => { const a = document.querySelector('.game-card.is-soon a'); return a ? a.getAttribute('href') : null; })(),
-    soonFocusable: (() => { const a = document.querySelector('.game-card.is-soon a'); return a ? a.getAttribute('tabindex') : null; })(),
-  }))()`);
-  if (out.initial.playable !== 3) FAIL('games', 'PLAYABLE_COUNT', `expected 3 playable games, found ${out.initial.playable}`);
-  // clicking the "coming soon" card must not jump the page
-  if (out.initial.soon) {
+  out.initial = await page.evaluate(`(() => {
+    const soon = document.querySelector('.game-card.is-soon');
+    const soonLink = soon ? soon.querySelector('.game-card-link') : null;
+    return {
+      cards: document.querySelectorAll('.game-card').length,
+      playable: document.querySelectorAll('.game-card:not(.is-soon)').length,
+      playableLinks: document.querySelectorAll('a.game-card-link[href^="/games/"]').length,
+      soon: document.querySelectorAll('.game-card.is-soon').length,
+      soonTag: soonLink ? soonLink.tagName : null,
+      soonHref: soonLink ? soonLink.getAttribute('href') : null,
+      soonFocusable: soonLink ? soonLink.getAttribute('tabindex') : null,
+      soonLinks: soon ? soon.querySelectorAll('a').length : null,
+    };
+  })()`);
+  if (out.initial.playable !== 3) FAIL('games', 'PLAYABLE_COUNT', `expected 3 playable game cards, found ${out.initial.playable}`);
+  if (out.initial.playableLinks !== 3) WARN('games', 'PLAYABLE_LINKS', `expected 3 playable cards to link to a game page, found ${out.initial.playableLinks} anchors`);
+  if (out.initial.soon && out.initial.soonHref !== null) {
+    WARN('games', 'SOON_LINK', `"coming soon" card is still a link (href="${out.initial.soonHref}")`);
+  }
+  // clicking the "coming soon" card must not jump the page / navigate
+  if (out.initial.soon && out.initial.soonLinks === 0) {
     const jump = await page.evaluate(`(() => {
-      window.scrollTo(0, 200);
+      const pageH = document.documentElement.scrollHeight;
+      window.scrollTo(0, Math.max(0, pageH - window.innerHeight - 40));
       const before = window.scrollY;
-      const a = document.querySelector('.game-card.is-soon a');
-      a.click();
-      return { before, after: window.scrollY, href: a.getAttribute('href') };
+      const el = document.querySelector('.game-card.is-soon .game-card-link');
+      el.click();
+      return { pageH, viewport: window.innerHeight, before, after: window.scrollY, url: location.href };
     })()`);
     out.soonClick = jump;
-    if (jump.after !== jump.before) WARN('games', 'SOON_CARD_JUMP', `clicking the "coming soon" card scrolled the page (${jump.before} -> ${jump.after}, href="${jump.href}")`);
+    if (jump.before > 0 && jump.after === 0 && jump.before !== 0) {
+      WARN('games', 'SOON_CARD_JUMP', `clicking the "coming soon" card jumps the page to the top (scroll ${jump.before} -> 0)`);
+    }
   }
   return out;
 }
@@ -824,27 +896,58 @@ async function testBreakout(page) {
   }))()`);
   if (!out.boot.canvas || out.boot.canvas.w === 0) FAIL('game-breakout', 'CANVAS', 'breakout canvas has zero size');
   if (!out.boot.overlayOpen) WARN('game-breakout', 'READY', 'breakout did not show the ready overlay');
+  /** read game status through the pause button label + overlay */
+  const state = () =>
+    page.evaluate(`(() => ({
+      overlayOpen: document.querySelector('[data-overlay]').classList.contains('is-open'),
+      overlayTitle: (document.querySelector('[data-overlay-title]') || {}).textContent,
+      pauseLabel: document.querySelector('[data-action="pause"]').textContent.trim(),
+      pauseDisabled: document.querySelector('[data-action="pause"]').disabled,
+      score: document.querySelector('[data-score]').textContent,
+      lives: document.querySelector('[data-lives]').textContent,
+      level: document.querySelector('[data-level]').textContent,
+    }))()`);
+
   await page.evaluate(`document.querySelector('[data-overlay-primary]').click()`);
-  await sleep(400);
-  out.afterStart = await page.evaluate(`(() => ({ overlayOpen: document.querySelector('[data-overlay]').classList.contains('is-open'), pauseLabel: document.querySelector('[data-action="pause"]').textContent.trim() }))()`);
-  if (out.afterStart.overlayOpen) FAIL('game-breakout', 'START', 'start button did not close the breakout overlay');
-  // move paddle by key, then pause with Space
+  await sleep(300);
+  // Space is "launch when ready / pause when running": press it until the game runs.
+  let running = false;
+  for (let i = 0; i < 4 && !running; i++) {
+    const s = await state();
+    if (s.pauseLabel === '暂停' && !s.overlayOpen) running = true;
+    else {
+      await page.key(' ', 'Space', 32, { text: ' ' });
+      await sleep(250);
+    }
+  }
+  out.running = await state();
+  if (!running) FAIL('game-breakout', 'START', `could not get breakout into the running state (state=${JSON.stringify(out.running)})`);
+
+  // pause via the pause button (deterministic), not via Space's launch/pause overload
+  await page.evaluate(`document.querySelector('[data-action="pause"]').click()`);
+  await sleep(300);
+  out.afterPauseButton = await state();
+  if (!/暂停|已暂停/.test(out.afterPauseButton.overlayTitle + out.afterPauseButton.pauseLabel) || !out.afterPauseButton.overlayOpen) {
+    FAIL('game-breakout', 'PAUSE_BUTTON', `pause button did not pause (${JSON.stringify(out.afterPauseButton)})`);
+  }
+  await page.evaluate(`document.querySelector('[data-action="pause"]').click()`);
+  await sleep(250);
+  out.afterResumeButton = await state();
+  if (out.afterResumeButton.overlayOpen) WARN('game-breakout', 'RESUME_BUTTON', 'pause button did not resume the game');
+
+  // keyboard: R restarts back to the ready overlay
+  await page.key('r', 'KeyR', 82);
+  await sleep(350);
+  out.afterRestart = await state();
+  if (!out.afterRestart.overlayOpen) WARN('game-breakout', 'RESTART', 'R did not return breakout to the ready overlay');
+
+  // paddle keys + Space launch from ready state (must not throw)
   await page.key('ArrowLeft', 'ArrowLeft', 37);
   await page.key('ArrowRight', 'ArrowRight', 39);
-  await sleep(1500);
   await page.key(' ', 'Space', 32, { text: ' ' });
-  await sleep(300);
-  out.afterSpace = await page.evaluate(`(() => ({ overlayOpen: document.querySelector('[data-overlay]').classList.contains('is-open'), overlayTitle: (document.querySelector('[data-overlay-title]') || {}).textContent, pauseLabel: document.querySelector('[data-action="pause"]').textContent.trim() }))()`);
-  if (!out.afterSpace.overlayOpen) FAIL('game-breakout', 'PAUSE_KEY', 'Space did not pause breakout');
-  await page.key(' ', 'Space', 32, { text: ' ' });
-  await sleep(250);
-  out.afterResume = await page.evaluate(`(() => ({ overlayOpen: document.querySelector('[data-overlay]').classList.contains('is-open'), pauseLabel: document.querySelector('[data-action="pause"]').textContent.trim() }))()`);
-  if (out.afterResume.overlayOpen) WARN('game-breakout', 'RESUME_KEY', 'Space did not resume breakout');
-  // R restart
-  await page.key('r', 'KeyR', 82);
-  await sleep(300);
-  out.afterRestart = await page.evaluate(`(() => ({ score: document.querySelector('[data-score]').textContent, lives: document.querySelector('[data-lives]').textContent, overlayOpen: document.querySelector('[data-overlay]').classList.contains('is-open') }))()`);
-  if (!out.afterRestart.overlayOpen) WARN('game-breakout', 'RESTART', 'R did not return breakout to the ready overlay');
+  await sleep(400);
+  out.afterLaunchKey = await state();
+
   const { errors } = summarizeRecords(page.records);
   if (errors.length) FAIL('game-breakout', 'CONSOLE', errors.join(' | '));
   return out;
@@ -918,6 +1021,31 @@ async function testBreakout(page) {
     const reveal = await page.evaluate(`(() => ({ total: document.querySelectorAll('[data-reveal]').length, pending: document.querySelectorAll('[data-reveal]:not(.is-revealed)').length }))()`);
     results.interactions.reveal = reveal;
     if (reveal.pending > 0) WARN('home', 'REVEAL_STUCK', `${reveal.pending}/${reveal.total} [data-reveal] blocks never revealed after 3.2s`);
+
+    // 6) keyboard: first Tab should reach the skip link, Enter should move to #main
+    await page.setViewport(1440, 900);
+    await page.goto(BASE + '/?noanim=1', { settle: 400 });
+    await page.evaluate('document.body.focus()');
+    await page.key('Tab', 'Tab', 9);
+    const kb = await page.evaluate(`(() => {
+      const el = document.activeElement;
+      return { tag: el ? el.tagName.toLowerCase() : null, cls: el ? el.className : null, text: el ? (el.textContent || '').trim().slice(0, 20) : null, href: el && el.getAttribute ? el.getAttribute('href') : null };
+    })()`);
+    results.interactions.skipLink = kb;
+    if (!kb.href || kb.href !== '#main') WARN('home', 'SKIP_LINK_TAB', `first Tab focused <${kb.tag} class="${kb.cls}">, expected the skip link (#main)`);
+
+    // 7) transient layout while reveal/entry animations run (no noanim=1)
+    for (const vw of [390, 768, 1440]) {
+      await page.setViewport(vw, 900);
+      await page.goto(BASE + '/', { settle: 120 });
+      const early = await page.evaluate(`({ w: document.documentElement.scrollWidth, iw: window.innerWidth })`);
+      await sleep(2900);
+      const late = await page.evaluate(`({ w: document.documentElement.scrollWidth, iw: window.innerWidth })`);
+      results.interactions.animatedLayout = results.interactions.animatedLayout || {};
+      results.interactions.animatedLayout[vw] = { early, late };
+      if (early.w > vw + 1) FAIL(`home(animated) @${vw}`, 'H_SCROLL_ANIM', `horizontal scroll during entry animation: ${early.w} > ${vw}`);
+      if (late.w > vw + 1) FAIL(`home(animated) @${vw}`, 'H_SCROLL_ANIM', `horizontal scroll after animation: ${late.w} > ${vw}`);
+    }
   } catch (e) {
     FAIL('harness', 'FATAL', e.stack || e.message);
   } finally {

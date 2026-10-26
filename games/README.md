@@ -63,7 +63,10 @@ node games/_tools/sync-logic.mjs --check  # 只校验（不同步则退出码 1�
 需要 Node.js ≥ 20（ES module + `node:test`）：
 
 ```bash
-node --test games/_tests/
+# 在仓库根目录执行；Node 24 / Windows 下传目录（games/_tests/）会报
+# "Cannot find module ...games\_tests"，所以用 glob 或直接 `node --test`。
+node --test "games/_tests/*.test.mjs"
+# 等价写法（同样在仓库根）：node --test
 ```
 
 当前覆盖：
@@ -201,7 +204,7 @@ import { createGame, step } from '../tetris/logic.mjs';
 ### 8. 自测
 
 ```bash
-node --test games/_tests/
+node --test "games/_tests/*.test.mjs"
 ```
 
 再用浏览器打开 `games/tetris/index.html` 与 iframe 嵌入页，确认：
