@@ -2216,10 +2216,10 @@ h1 {
   display: block;
   max-width: 100%;
   margin-block: 1.5em;
-  padding: 12px 14px;
-  border: 1px dashed var(--line);
+  padding: 13px 18px;
+  border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: rgba(196, 220, 255, 0.022);
+  background: color-mix(in srgb, var(--surface) 52%, transparent);
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
@@ -3117,8 +3117,8 @@ html[data-theme] body {
 }
 
 [data-theme="light"] .math.math-display {
-  background: rgba(24, 50, 36, 0.025);
-  border-color: rgba(28, 48, 38, 0.16);
+  background: rgba(24, 50, 36, 0.03);
+  border-color: rgba(28, 48, 38, 0.14);
 }
 
 [data-theme="light"] .prose .table-wrap {

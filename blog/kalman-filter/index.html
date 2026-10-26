@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>线性动态系统-卡尔曼滤波 · Amuda</title>
-<meta name="description" content="从概率图模型讲起，区分 HMM、卡尔曼滤波和粒子滤波各自适用的场景，再用条件概率一步步推导线性高斯系统的预测—校正递推，帮助你理解滤波为什么能降噪。">
+<title>线性动态系统：卡尔曼滤波 · Amuda</title>
+<meta name="description" content="从贝叶斯滤波的预测—校正规讲起，串起 HMM、卡尔曼滤波与粒子滤波的关系，推导线性高斯假设下的卡尔曼增益与协方差更新，并用一维例子说明它为什么能把噪声压下去。">
 <link rel="canonical" href="https://cooloverflow.github.io/blog/kalman-filter/">
 <meta name="author" content="Amuda">
 <meta name="theme-color" content="#070a0f">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Amuda">
-<meta property="og:title" content="线性动态系统-卡尔曼滤波">
-<meta property="og:description" content="从概率图模型讲起，区分 HMM、卡尔曼滤波和粒子滤波各自适用的场景，再用条件概率一步步推导线性高斯系统的预测—校正递推，帮助你理解滤波为什么能降噪。">
+<meta property="og:title" content="线性动态系统：卡尔曼滤波">
+<meta property="og:description" content="从贝叶斯滤波的预测—校正规讲起，串起 HMM、卡尔曼滤波与粒子滤波的关系，推导线性高斯假设下的卡尔曼增益与协方差更新，并用一维例子说明它为什么能把噪声压下去。">
 <meta property="og:url" content="https://cooloverflow.github.io/blog/kalman-filter/">
 <meta property="og:image" content="https://cooloverflow.github.io/assets/img/avatar.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线性动态系统-卡尔曼滤波">
-<meta name="twitter:description" content="从概率图模型讲起，区分 HMM、卡尔曼滤波和粒子滤波各自适用的场景，再用条件概率一步步推导线性高斯系统的预测—校正递推，帮助你理解滤波为什么能降噪。">
+<meta name="twitter:title" content="线性动态系统：卡尔曼滤波">
+<meta name="twitter:description" content="从贝叶斯滤波的预测—校正规讲起，串起 HMM、卡尔曼滤波与粒子滤波的关系，推导线性高斯假设下的卡尔曼增益与协方差更新，并用一维例子说明它为什么能把噪声压下去。">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="Amuda 的文章" href="/feed.xml">
 <link rel="stylesheet" href="/assets/css/base.css">
@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/vendor/katex/katex.min.css">
 <script defer src="/assets/vendor/katex/katex.min.js"></script>
 <script defer src="/assets/vendor/katex/auto-render.min.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"线性动态系统-卡尔曼滤波","description":"从概率图模型讲起，区分 HMM、卡尔曼滤波和粒子滤波各自适用的场景，再用条件概率一步步推导线性高斯系统的预测—校正递推，帮助你理解滤波为什么能降噪。","author":{"@type":"Person","name":"Amuda","url":"https://cooloverflow.github.io"},"mainEntityOfPage":"https://cooloverflow.github.io/blog/kalman-filter/","keywords":"卡尔曼滤波, 概率图模型, 贝叶斯滤波","articleSection":"机器学习"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"线性动态系统：卡尔曼滤波","description":"从贝叶斯滤波的预测—校正规讲起，串起 HMM、卡尔曼滤波与粒子滤波的关系，推导线性高斯假设下的卡尔曼增益与协方差更新，并用一维例子说明它为什么能把噪声压下去。","author":{"@type":"Person","name":"Amuda","url":"https://cooloverflow.github.io"},"mainEntityOfPage":"https://cooloverflow.github.io/blog/kalman-filter/","keywords":"卡尔曼滤波, 贝叶斯滤波, 概率图模型, 状态估计","articleSection":"机器学习"}</script>
 </head>
 <body class="page-post">
 <a class="skip-link" href="#main">跳到主要内容</a>
@@ -66,46 +66,164 @@
       <nav class="breadcrumb" aria-label="面包屑">
         <a href="/blog/">文章</a><span aria-hidden="true">/</span><span class="breadcrumb-cat">机器学习</span>
       </nav>
-      <h1 class="post-title">线性动态系统-卡尔曼滤波</h1>
-      <p class="post-summary">从概率图模型讲起，区分 HMM、卡尔曼滤波和粒子滤波各自适用的场景，再用条件概率一步步推导线性高斯系统的预测—校正递推，帮助你理解滤波为什么能降噪。</p>
+      <h1 class="post-title">线性动态系统：卡尔曼滤波</h1>
+      <p class="post-summary">从贝叶斯滤波的预测—校正规讲起，串起 HMM、卡尔曼滤波与粒子滤波的关系，推导线性高斯假设下的卡尔曼增益与协方差更新，并用一维例子说明它为什么能把噪声压下去。</p>
       <div class="post-meta">
-        <span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>1 分钟读完</span>
+        <span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>8 分钟读完</span>
         <span class="meta-sep" aria-hidden="true">·</span>
         <span class="post-category">机器学习</span>
       </div>
-      <ul class="tag-list post-tags"><li class="tag">#卡尔曼滤波</li><li class="tag">#概率图模型</li><li class="tag">#贝叶斯滤波</li></ul>
+      <ul class="tag-list post-tags"><li class="tag">#卡尔曼滤波</li><li class="tag">#贝叶斯滤波</li><li class="tag">#概率图模型</li><li class="tag">#状态估计</li></ul>
     </div>
   </header>
   <div class="container post-layout">
     <aside class="post-toc" aria-label="本文目录">
       <p class="toc-title">本文目录</p>
-      <nav class="toc-nav"><ol><li class="toc-item toc-l2"><a href="#h-1">背景知识</a></li><li class="toc-item toc-l2"><a href="#h-2">公式推导</a></li></ol></nav>
+      <nav class="toc-nav"><ol><li class="toc-item toc-l2"><a href="#h-1">0. 一句话版本</a></li><li class="toc-item toc-l2"><a href="#h-2">1. 背景：三种常见的动态模型</a></li><li class="toc-item toc-l2"><a href="#h-3">2. 模型假设：线性 + 高斯</a></li><li class="toc-item toc-l2"><a href="#h-4">3. 要解的三个问题</a></li><li class="toc-item toc-l2"><a href="#h-5">4. 贝叶斯递推：预测与校正</a></li><li class="toc-item toc-l2"><a href="#h-6">5. 高斯闭包与五个方程</a></li><li class="toc-item toc-l3"><a href="#h-7">增益是怎么来的</a></li><li class="toc-item toc-l2"><a href="#h-8">6. 一维例子：把它看成一个加权平均</a></li><li class="toc-item toc-l2"><a href="#h-9">7. 一个能跑的最小实现</a></li><li class="toc-item toc-l2"><a href="#h-10">8. 和游戏开发的关系</a></li><li class="toc-item toc-l2"><a href="#h-11">9. 小结</a></li></ol></nav>
     </aside>
     <div class="post-body prose">
-      <h2 id="h-1">背景知识</h2>
-<p>卡尔曼滤波是一个线性高斯动态模型，主要用于滤波。</p>
-<p>动态模型常见为三种：HMM，kalman filter，particle filter。 HMM是对于离散的隐状态，kalman filter是对于线性动态模型，particle filter对于非线性动态模型。</p>
-<p>一般的概率图模型为：</p>
-<div class="code-block"><span class="code-lang">text</span><pre><code class="language-text">... --&gt; z_{t-1} --&gt; z_t --&gt; ...
+      <h2 id="h-1">0. 一句话版本</h2>
+<p>卡尔曼滤波做的事，本质上是<strong>把「预测」和「观测」两个高斯分布相乘，得到一个新的高斯</strong>。谁更确定（方差更小），谁的话语权就更大；这个话语权就是卡尔曼增益 $K$。</p>
+<p>后面所有公式，都只是在精确地计算这个乘积。</p>
+<h2 id="h-2">1. 背景：三种常见的动态模型</h2>
+<p>动态系统都关心「隐状态随时间的演化」以及「我们只能看到带噪声的观测」这两件事。</p>
+<ul><li><strong>HMM（隐马尔可夫模型）</strong>：隐状态离散且有限，转移和发射都是概率表。</li><li><strong>卡尔曼滤波</strong>：隐状态是连续向量，转移与观测都是<strong>线性变换 + 高斯噪声</strong>。</li><li><strong>粒子滤波</strong>：状态连续，但转移/观测可以非线性、非高斯，用一堆带权样本逼近分布。</li></ul>
+<div class="table-wrap"><table><thead><tr><th>模型</th><th>隐状态</th><th>转移 / 观测</th><th>求解方式</th></tr></thead><tbody><tr><td>HMM</td><td>离散</td><td>离散概率表</td><td>前向算法、Viterbi</td></tr><tr><td>卡尔曼滤波</td><td>连续向量</td><td>线性 + 高斯噪声</td><td>闭式递推（均值和协方差）</td></tr><tr><td>粒子滤波</td><td>连续向量</td><td>非线性 / 非高斯</td><td>重要性采样 + 重采样</td></tr></tbody></table></div>
+<p>它们共享同一个骨架——概率图模型：隐状态 $z_t$ 沿时间链式演化，每个时刻的观测 $x_t$ 只依赖当前隐状态。</p>
+<div class="math math-display">$$
+\begin{array}{ccccccc}
+\cdots &amp; \rightarrow &amp; z_{t-1} &amp; \rightarrow &amp; z_{t} &amp; \rightarrow &amp; \cdots \\
+ &amp; &amp; \downarrow &amp; &amp; \downarrow &amp; &amp; \\
+ &amp; &amp; x_{t-1} &amp; &amp; x_{t} &amp; &amp;
+\end{array}
+$$</div>
+<p>两个箭头方向对应两条条件独立假设：</p>
+<div class="math math-display">$$
+P(z_t \mid z_{1:t-1}, x_{1:t-1}) = P(z_t \mid z_{t-1}),
+\qquad
+P(x_t \mid z_{1:t}, x_{1:t-1}) = P(x_t \mid z_t).
+$$</div>
+<p>也就是：未来只依赖现在，观测只依赖当下的状态。</p>
+<h2 id="h-3">2. 模型假设：线性 + 高斯</h2>
+<p>卡尔曼滤波在这个骨架上加了两个假设。</p>
+<p><strong>状态方程</strong>（隐状态怎么演化）：</p>
+<div class="math math-display">$$
+z_t = F_t z_{t-1} + B_t u_t + w_t,
+\qquad w_t \sim \mathcal{N}(0, Q_t)
+$$</div>
+<p><strong>观测方程</strong>（我们能看到什么）：</p>
+<div class="math math-display">$$
+x_t = H_t z_t + v_t,
+\qquad v_t \sim \mathcal{N}(0, R_t)
+$$</div>
+<p>其中：</p>
+<ul><li>$z_t \in \mathbb{R}^n$ 是隐状态，$x_t \in \mathbb{R}^m$ 是观测；</li><li>$F_t$ 是状态转移矩阵，$B_t$ 把控制输入 $u_t$ 映射到状态上；</li><li>$H_t$ 是观测矩阵，把状态投影到观测空间；</li><li>$Q_t$ 是过程噪声协方差（模型有多不可信），$R_t$ 是观测噪声协方差（传感器有多糊）。</li></ul>
+<h2 id="h-4">3. 要解的三个问题</h2>
+<p>按用到的数据范围，可以把问题分成三类：</p>
+<ul><li><strong>滤波（filtering）</strong>：$P(z_t \mid x_{1:t})$ —— 用到现在为止的所有观测估计当前状态，实时性最好。</li><li><strong>预测（prediction）</strong>：$P(z_{t+k} \mid x_{1:t})$ —— 估计未来状态，没有新观测可用。</li><li><strong>平滑（smoothing）</strong>：$P(z_t \mid x_{1:T})$ —— 事后用全部数据回看，精度最高但必须离线。</li></ul>
+<p>卡尔曼滤波主要解决第一个，但它的递推里天然包含预测步。</p>
+<h2 id="h-5">4. 贝叶斯递推：预测与校正</h2>
+<p>目标是递推地算 $P(z_t \mid x_{1:t})$。用贝叶斯公式展开：</p>
+<div class="math math-display">$$
+P(z_t \mid x_{1:t})
+= \frac{P(x_t \mid z_t)\, P(z_t \mid x_{1:t-1})}{P(x_t \mid x_{1:t-1})}
+$$</div>
+<p>分母 $P(x_t \mid x_{1:t-1})$ 与 $z_t$ 无关，只是归一化常数，所以写成分比例的形式更清爽：</p>
+<div class="math math-display">$$
+P(z_t \mid x_{1:t}) \;\propto\; \underbrace{P(x_t \mid z_t)}_{\text{似然：观测}} \cdot \underbrace{P(z_t \mid x_{1:t-1})}_{\text{先验：预测}}.
+$$</div>
+<p>右边第一项是观测模型（用当前观测修正），第二项是上一轮的预测。而预测本身又是用<strong>查普曼–科尔莫戈罗夫方程</strong>从上一时刻的后验推出来的：</p>
+<div class="math math-display">$$
+P(z_t \mid x_{1:t-1})
+= \int P(z_t \mid z_{t-1})\, P(z_{t-1} \mid x_{1:t-1}) \,\mathrm{d} z_{t-1}.
+$$</div>
+<p>把两步交替执行，就得到经典的「预测 — 校正」循环：</p>
+<div class="table-wrap"><table><thead><tr><th>时刻</th><th>先验 / 预测</th><th>后验 / 校正</th></tr></thead><tbody><tr><td>$t=1$</td><td>$P(z_1)$（初始分布）</td><td>$P(z_1 \mid x_1)$</td></tr><tr><td>$t=2$</td><td>$P(z_2 \mid x_1)$</td><td>$P(z_2 \mid x_1, x_2)$</td></tr><tr><td>$t=3$</td><td>$P(z_3 \mid x_{1:2})$</td><td>$P(z_3 \mid x_{1:3})$</td></tr><tr><td>$\cdots$</td><td>$\cdots$</td><td>$\cdots$</td></tr></tbody></table></div>
+<p>到这一步还是没有具体算法，因为上面全是<strong>分布</strong>的运算，对一般分布积分很难算。卡尔曼滤波的价值在于：在线性高斯的假设下，这些积分有闭式解。</p>
+<h2 id="h-6">5. 高斯闭包与五个方程</h2>
+<p>关键事实：<strong>高斯分布经过线性变换、高斯噪声叠加、乘另一个高斯，仍然是高斯</strong>。所以整条递推里，分布永远保持高斯，我们只需要维护它的均值（状态估计）和协方差（不确定度）。</p>
+<p>记 $\hat z_{t \mid t-1}$ 为先验均值、$P_{t \mid t-1}$ 为先验协方差。</p>
+<p><strong>预测步</strong>（把上一时刻的后验往前推）：</p>
+<div class="math math-display">$$
+\hat z_{t \mid t-1} = F_t\, \hat z_{t-1 \mid t-1} + B_t u_t
+$$</div>
+<div class="math math-display">$$
+P_{t \mid t-1} = F_t P_{t-1 \mid t-1} F_t^{\top} + Q_t
+$$</div>
+<p><strong>更新步</strong>（用观测 $x_t$ 修正）。先算观测残差与它的协方差：</p>
+<div class="math math-display">$$
+\tilde y_t = x_t - H_t \hat z_{t \mid t-1},
+\qquad
+S_t = H_t P_{t \mid t-1} H_t^{\top} + R_t
+$$</div>
+<p>然后是<strong>卡尔曼增益</strong>——这步是全部推导的核心：</p>
+<div class="math math-display">$$
+K_t = P_{t \mid t-1} H_t^{\top} S_t^{-1}
+$$</div>
+<p>状态与协方差的更新：</p>
+<div class="math math-display">$$
+\hat z_{t \mid t} = \hat z_{t \mid t-1} + K_t \tilde y_t
+$$</div>
+<div class="math math-display">$$
+P_{t \mid t} = \left(I - K_t H_t\right) P_{t \mid t-1}
+$$</div>
+<p>这五个方程就是卡尔曼滤波的全部。写成代码只有几行，难点全在理解 $K_t$ 为什么长这样。</p>
+<h3 id="h-7">增益是怎么来的</h3>
+<p>把后验误差的协方差写成 $K$ 的函数，然后最小化它的迹（即总的不确定度）：</p>
+<div class="math math-display">$$
+K_t = \arg\min_{K} \operatorname{tr}\!\left(
+\mathbb{E}\left[(z_t - \hat z_{t \mid t})(z_t - \hat z_{t \mid t})^{\top}\right]
+\right)
+$$</div>
+<p>对 $K$ 求导并令其为零，得到的正是上面的 $K_t = P_{t \mid t-1} H_t^{\top} S_t^{-1}$。它的形状也很好记：分子是「预测的不确定度投影到观测空间」，分母是「预测的不确定度 + 观测噪声」——两者之比，就是新观测该占的权重。</p>
+<h2 id="h-8">6. 一维例子：把它看成一个加权平均</h2>
+<p>把矩阵全部退化成标量（$F=H=1$），预测方差记作 $p^{-}$、观测噪声方差记作 $r$，则：</p>
+<div class="math math-display">$$
+K = \frac{p^{-}}{p^{-} + r},
+\qquad
+p = \frac{p^{-} r}{p^{-} + r}
+$$</div>
+<p>后验均值就是两个估计的加权平均：</p>
+<div class="math math-display">$$
+\hat z = (1-K)\,\hat z^{-} + K\, x
+$$</div>
+<p>这个式子把四种情况说得很清楚：</p>
+<ul><li><strong>$p^{-} \gg r$</strong>（模型很没底、观测很准）：$K \to 1$，几乎完全相信观测；</li><li><strong>$r \gg p^{-}$</strong>（传感器很糊）：$K \to 0$，几乎完全相信预测；</li><li><strong>$Q \to 0$</strong>（模型完全可信）：预测占主导，观测只做微调；</li><li><strong>$R \to 0$</strong>（理想传感器）：直接跳到观测值。</li></ul>
+<p>如果只要「大概懂」，记住这一节的加权平均就够了；工程里一维卡尔曼常常就写成这四行。</p>
+<h2 id="h-9">7. 一个能跑的最小实现</h2>
+<p>下面是一维卡尔曼的完整实现，可以粘进 <code>python</code> 直接看它如何把噪声序列磨平：</p>
+<div class="code-block"><span class="code-lang">python</span><pre><code class="language-python">import numpy as np
 
-        ↓         ↓
+def kalman_1d(observations, q=1e-4, r=0.1, x0=0.0, p0=1.0):
+    &quot;&quot;&quot;一维卡尔曼：F = 1, H = 1，逐点输出后验均值与方差。&quot;&quot;&quot;
+    x, p = x0, p0
+    for z in observations:
+        # 预测
+        x_pred = x
+        p_pred = p + q
+        # 更新
+        k = p_pred / (p_pred + r)
+        x = x_pred + k * (z - x_pred)
+        p = (1 - k) * p_pred
+        yield x, p
 
-        x_{t-1}   x_t</code></pre></div>
-<p>其中，z为隐状态，x为观测状态。</p>
-<p>在卡尔曼滤波中，认为发射概率和转移概率都是线性的，并且噪声满足高斯分布. 对于卡尔曼滤波，更关注filter问题：P(z_t|x_1, x_2, ..., x_t)。</p>
-<h2 id="h-2">公式推导</h2>
-<p>利用条件概率公式有P(z_t|x_1, x_2, ..., x_t) = P(z_t, x_1, x_2, ..., x_t) / P(x_1, x_2, ..., x_t)，所以P(z_t|x_1, x_2, ..., x_t) ∝ P(z_t, x_1, x_2, ..., x_t)</p>
-<p>利用条件概率公式P(z_t, x_1, x_2, ..., x_t) = P(x_t|x_1, x_2, ..., z_t)·P(x_1, x_2, ..., z_t)=P(x_t|z_t)·P(x_1, x_2, ..., z_t)</p>
-<p>P(x_1, x_2, ..., z_t) = P(z_t|x_1, x_2, ...,x_{t-1})·P(x_1, x_2, ..., x_{t-1})∝ P(z_t|x_1, ...,x_{t-1})</p>
-<p>综合有P(z_t|x_1, x_2, ..., x_t) ∝ P(x_t|z_t)·P(z_t|x_1, ...,x_{t-1})，其中P(z_t|x_1, ...,x_{t-1}) = ∫_{z_{t-1}}{P(z_t|z_{t-1})·P(z_{t-1}|x_1, ...,x_{t-1})}dz_{t-1}</p>
-<p>看看就能够发现，出现了递推公式：</p>
-<div class="code-block"><span class="code-lang">text</span><pre><code class="language-text">t=1:P(z_1|x_1) -- update
-    P(z_2|x_1) -- prediction
-t=2:P(z_2|x_2) -- update（correction）
-    P(z_3|x_2) -- prediction
-    ...</code></pre></div>
-<p>因此，滤波过程中在不断预测和修正，能够很好地解决高斯分布时候的噪声。</p>
-<p>（github编写公式不能用LaTeX真麻烦）</p>
+rng = np.random.default_rng(7)
+truth, obs = 25.0, []
+for _ in range(60):
+    truth += rng.normal(0, 0.6)           # 真实温度缓慢漂移
+    obs.append(truth + rng.normal(0, 3))   # 温度计噪声很大
+
+# 纯观测（未滤波）的标准差 vs 卡尔曼输出的标准差
+print(&quot;raw   std:&quot;, np.std(obs))
+print(&quot;kalman std:&quot;, np.std([x for x, _ in kalman_1d(obs)]))</code></pre></div>
+<p>直观上，<code>p_pred</code> 一直在涨（模型外推的不确定度），<code>k</code> 随之变大；一旦拿到观测，<code>p</code> 立刻被压小——所以它天生会「越不确定越信观测」。</p>
+<h2 id="h-10">8. 和游戏开发的关系</h2>
+<p>卡尔曼滤波在游戏里比想象中常见，只是很多人不知道自己用的是它：</p>
+<ul><li><strong>输入平滑</strong>：手柄摇杆、鼠标轨迹的抖动，用一维卡尔曼比指数平滑更讲道理（抖动大时自动更信模型）。</li><li><strong>相机去抖</strong>：把头位姿作为状态向量，把相机延迟和抖动一起建模成噪声。</li><li><strong>传感器融合</strong>：IMU 的加速度积分会漂、磁力计有噪声，用卡尔曼按不确定度加权融合，正好各取所长。</li><li><strong>网络位置预测</strong>：用速度/加速度做状态，预测对手下一帧位置，抵消延迟。</li></ul>
+<p>它的代价也很明确：高斯假设让它在多峰分布、强非线性场景下会失效——那时就该换粒子滤波或 EKF/UKF 一类的扩展版本了。</p>
+<h2 id="h-11">9. 小结</h2>
+<ul><li>滤波 = 反复做「预测」和「用观测校正」，本质是两个高斯相乘的加权平均；</li><li>线性高斯假设让分布保持高斯，所以只需递推均值和协方差；</li><li>卡尔曼增益 $K_t$ 由「预测不确定度 vs 观测噪声」决定，不确定度越大越信观测；</li><li>它的边界是高斯/线性假设，超出边界就用粒子滤波或扩展卡尔曼。</li></ul>
+<p>当年在 GitHub 上写不了公式，这篇只能堆文字；现在站点用 KaTeX 渲染，终于能把推导写完整了。之后有空想补上 UKF 和粒子滤波，顺便把在项目里做输入平滑的实测数据贴上来。</p>
     </div>
   </div>
   <footer class="post-footer">
