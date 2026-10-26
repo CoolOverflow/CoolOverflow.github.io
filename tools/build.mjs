@@ -597,7 +597,6 @@ function postPage(p, idx) {
   <footer class="post-footer">
     <div class="container container-narrow">
       <div class="post-end" aria-hidden="true"><span>◆</span></div>
-      <p class="post-end-note">如果你觉得这篇有帮助，欢迎到 <a href="${site.github}/CoolOverflow.github.io" target="_blank" rel="noopener noreferrer">GitHub</a> 点个 star，或者 <a href="mailto:${site.email}">写信</a> 和我聊聊。</p>
       <nav class="post-nav" aria-label="上下篇">
         ${
           newer
