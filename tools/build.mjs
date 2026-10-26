@@ -258,7 +258,9 @@ function projectCard(r, { compact = false, headingLevel = 3 } = {}) {
   }
   ${tags.length ? `<ul class="tag-list project-tags">${tags.map((t) => `<li class="tag">${esc(t)}</li>`).join('')}</ul>` : ''}
   <div class="project-foot">
-    <span class="project-meta">${r.stars ? `${ICON.star}<span>${r.stars}</span>` : ''}<span>${r.year || ''}</span></span>
+    <span class="project-meta">${r.stars ? `<span class="project-stars">${ICON.star}<span>${r.stars}</span></span>` : ''}${
+      r.stars && r.year ? '<span class="meta-sep" aria-hidden="true">·</span>' : ''
+    }${r.year ? `<span class="project-year">${r.year}</span>` : ''}</span>
     <span class="project-links">
       <a class="project-link" href="${r.url}" target="_blank" rel="noopener noreferrer">源码 ${ICON.arrowUpRight}</a>
       ${r.highlight ? `<a class="project-link" href="${r.highlight}" target="_blank" rel="noopener noreferrer">演示 ${ICON.arrowUpRight}</a>` : ''}
